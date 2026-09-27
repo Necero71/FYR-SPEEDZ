@@ -23,7 +23,11 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: auto; /* Standard PC cursor restored */
+            cursor: auto;
+        }
+
+        html {
+            scroll-behavior: smooth; /* QoL: Smooth anchor scrolling */
         }
 
         body {
@@ -33,6 +37,32 @@
             line-height: 1.5;
             overflow-x: hidden;
             font-weight: 300;
+        }
+
+        /* QoL: Toast Notification Popup */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.6rem 1.25rem;
+            border-radius: 4px;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .toast.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
         }
 
         /* SCROLL PROGRESS */
@@ -147,7 +177,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* Mobile Sleek List Grid */
         .services-list {
             display: flex;
             flex-direction: column;
@@ -163,11 +192,12 @@
             align-items: center;
             cursor: pointer;
             border-radius: 6px;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, transform 0.1s ease;
         }
 
         .service-row:active {
             border-color: var(--accent-red);
+            transform: scale(0.98);
         }
 
         .service-main-title {
@@ -183,7 +213,7 @@
             color: var(--accent-red);
         }
 
-        .service-index { display: none; } /* Hidden on mobile app view for sleekness */
+        .service-index { display: none; }
 
         .pillars-grid {
             display: grid;
@@ -247,6 +277,11 @@
             text-transform: uppercase;
             text-decoration: none;
             border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .action-link:active {
+            background-color: rgba(255,255,255,0.05);
         }
 
         .action-link.wa {
@@ -262,6 +297,11 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .studio-meta:hover {
+            color: var(--text-main);
         }
 
         /* Mobile Bottom-Sheet Modal */
@@ -312,7 +352,10 @@
             border: none;
             text-transform: uppercase;
             padding: 0.5rem;
+            cursor: pointer;
         }
+
+        .close-btn:hover { color: var(--text-main); }
 
         #modal-title {
             font-family: 'Syne', sans-serif;
@@ -374,7 +417,10 @@
             z-index: 99;
             text-decoration: none;
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s ease;
         }
+
+        .fab-wa:active { transform: scale(0.9); }
 
 
         /* ==========================================
@@ -435,7 +481,6 @@
             .section-tag { font-size: 0.75rem; margin-bottom: 0; }
             .section-heading { font-size: clamp(2rem, 4vw, 3.5rem); }
 
-            /* Desktop Unseen-style List Architecture */
             .services-list { display: flex; flex-direction: column; gap: 0; }
             .service-row {
                 background-color: transparent;
@@ -506,6 +551,11 @@
                 letter-spacing: 0.1em;
                 border-radius: 0;
             }
+            .action-link:hover {
+                background-color: var(--text-main);
+                color: var(--bg-color);
+                border-color: var(--text-main);
+            }
             .studio-meta { font-size: 0.75rem; }
 
             .modal-overlay { align-items: center; }
@@ -526,6 +576,9 @@
     </style>
 </head>
 <body>
+
+    <!-- QoL Toast Element -->
+    <div class="toast" id="qol-toast">Copied to clipboard!</div>
 
     <div class="scroll-progress" id="scroll-progress"></div>
     
@@ -640,14 +693,14 @@
             <h2 class="contact-title">Ready to service<br>your vehicle?</h2>
             
             <div class="contact-grid">
-                <a href="tel:+27610956964" class="action-link">📞 Fayyaad: 061 095 6964</a>
-                <a href="tel:+27626828245" class="action-link">📞 Jashmika: 062 682 8245</a>
+                <a href="tel:+27610956964" class="action-link" onclick="copyToClipboard(event, '0610956964')">📞 Fayyaad: 061 095 6964</a>
+                <a href="tel:+27626828245" class="action-link" onclick="copyToClipboard(event, '0626828245')">📞 Jashmika: 062 682 8245</a>
                 <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="action-link wa">💬 WhatsApp Booking</a>
                 <a href="https://youtube.com/@fyr_speedz?si=4avvTB22L735EMTe" target="_blank" class="action-link">📺 YouTube Channel</a>
             </div>
 
-            <div class="studio-meta">
-                LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABILITY ACTIVE
+            <div class="studio-meta" onclick="copyToClipboard(event, 'Cape Town, Mobile Service Active')">
+                LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABILITY ACTIVE [TAP TO COPY]
             </div>
         </div>
 
@@ -712,6 +765,26 @@
                 forceCloseModal();
             }
         });
+
+        // QoL: Quick-copy functionality for contact data
+        function copyToClipboard(e, text) {
+            // If it's a mobile device and they want to make a phone call, let it dial. 
+            // But if it's the location or they want a quick copy, copy it smoothly.
+            if(text.includes('Cape Town')) {
+                e.preventDefault();
+                navigator.clipboard.writeText(text);
+                showToast("Location copied to clipboard!");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('qol-toast');
+            toast.textContent = message;
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 2500);
+        }
 
         // Scroll Progress & Header Glass Effect
         window.addEventListener('scroll', () => {
