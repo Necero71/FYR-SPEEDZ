@@ -880,13 +880,13 @@
             }
         }
 
-        // Interactive Canvas Background Engine (Mouse-Reactive Particle Grid)
+        // Interactive Canvas Background Engine (High-Impact Cursor Tracking)
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         
         let width, height;
         let particles = [];
-        const mouse = { x: null, y: null, radius: 130 };
+        const mouse = { x: null, y: null, radius: 180 };
 
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
@@ -910,9 +910,9 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.size = Math.random() * 1.5 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 1.8 + 0.6;
             }
 
             update() {
@@ -921,10 +921,20 @@
 
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    const mdx = mouse.x - this.x;
+                    const mdy = mouse.y - this.y;
+                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mdist < mouse.radius) {
+                        this.x += mdx * 0.015;
+                        this.y += mdy * 0.015;
+                    }
+                }
             }
 
             draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -933,7 +943,7 @@
 
         function initParticles() {
             particles = [];
-            const count = Math.floor((width * height) / 16000);
+            const count = Math.floor((width * height) / 15000);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -953,9 +963,9 @@
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < 110) {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist / 110)})`;
-                        ctx.lineWidth = 0.5;
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.07 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -969,8 +979,8 @@
                     const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
 
                     if (mdist < mouse.radius) {
-                        ctx.strokeStyle = `rgba(255, 34, 34, ${0.2 * (1 - mdist / mouse.radius)})`;
-                        ctx.lineWidth = 0.7;
+                        ctx.strokeStyle = `rgba(255, 34, 34, ${0.35 * (1 - mdist / mouse.radius)})`;
+                        ctx.lineWidth = 0.9;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(mouse.x, mouse.y);
