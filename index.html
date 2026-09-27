@@ -658,10 +658,9 @@
     <!-- Interactive Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Hidden Audio Element for Atmospheric Soundscape -->
+    <!-- Uploaded Deep Space Ambient Audio Element -->
     <audio id="ambient-audio" loop preload="none">
-        <!-- Low-pass filtered ambient synthetic drone stream -->
-        <source src="https://assets.mixkit.co/active_storage/sfx/2870/2870-preview.mp3" type="audio/mpeg">
+        <source src="Existential _ Deep Space Ambient [joJtbRdupBg].mp3" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="qol-toast">Copied to clipboard!</div>
@@ -881,13 +880,13 @@
             }
         }
 
-        // Interactive Canvas Background Engine (Subtle Particle Grid)
+        // Interactive Canvas Background Engine (Mouse-Reactive Particle Grid)
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         
         let width, height;
         let particles = [];
-        const mouse = { x: null, y: null, radius: 120 };
+        const mouse = { x: null, y: null, radius: 130 };
 
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
@@ -925,7 +924,7 @@
             }
 
             draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -934,7 +933,7 @@
 
         function initParticles() {
             particles = [];
-            const count = Math.floor((width * height) / 18000); // Responsive particle density
+            const count = Math.floor((width * height) / 16000);
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle());
             }
@@ -949,14 +948,13 @@
                 particles[i].update();
                 particles[i].draw();
 
-                // Connect particles near each other or mouse
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
 
                     if (dist < 110) {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.04 * (1 - dist / 110)})`;
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist / 110)})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
@@ -971,8 +969,8 @@
                     const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
 
                     if (mdist < mouse.radius) {
-                        ctx.strokeStyle = `rgba(255, 34, 34, ${0.15 * (1 - mdist / mouse.radius)})`;
-                        ctx.lineWidth = 0.6;
+                        ctx.strokeStyle = `rgba(255, 34, 34, ${0.2 * (1 - mdist / mouse.radius)})`;
+                        ctx.lineWidth = 0.7;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(mouse.x, mouse.y);
