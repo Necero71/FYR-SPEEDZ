@@ -49,7 +49,7 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            filter: blur(40px); /* Creates the soft smoke/liquid fusion effect */
+            filter: blur(40px);
             opacity: 0.65;
         }
 
@@ -617,9 +617,9 @@
     <!-- Liquid Smoke Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Uploaded Deep Space Ambient Audio Element -->
+    <!-- Updated Oskar med k Audio Element -->
     <audio id="ambient-audio" loop preload="none">
-        <source src="Existential _ Deep Space Ambient [joJtbRdupBg].mp3" type="audio/mpeg">
+        <source src="oskar med k - On The Ground (Official Music Video) [FdRhGqyY2V0].mp3" type="audio/mpeg">
     </audio>
 
     <div class="toast" id="qol-toast">Copied to clipboard!</div>
@@ -884,7 +884,6 @@
                 if (this.x < -100 || this.x > width + 100) this.vx *= -1;
                 if (this.y < -100 || this.y > height + 100) this.vy *= -1;
 
-                // Gentle drift toward cursor / touch point
                 const dx = pointer.x - this.x;
                 const dy = pointer.y - this.y;
                 this.x += dx * 0.012;
@@ -901,7 +900,7 @@
 
         function initBlobs() {
             blobs = [];
-            const count = 7; // Number of organic fluid nodes
+            const count = 7;
             for (let i = 0; i < count; i++) {
                 blobs.push(new LiquidBlob());
             }
@@ -912,7 +911,6 @@
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
 
-            // Smooth interpolation for pointer tracking
             pointer.x += (pointer.targetX - pointer.x) * 0.06;
             pointer.y += (pointer.targetY - pointer.y) * 0.06;
 
