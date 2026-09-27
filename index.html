@@ -25,10 +25,10 @@
             padding: 0;
         }
 
-        /* Re-enable default cursor on touch devices for proper mobile UX */
+        /* Default touch behavior */
         @media (pointer: coarse) {
             * { cursor: auto !important; }
-            .cursor-dot, .cursor-follower { display: none !important; }
+            .custom-cursor { display: none !important; }
         }
 
         body {
@@ -40,30 +40,19 @@
             font-weight: 300;
         }
 
-        /* CUSTOM FLUID CURSOR (Desktop only) */
+        /* CUSTOM WRENCH CURSOR (Desktop only) */
         @media (pointer: fine) {
-            * { cursor: none; }
-            .cursor-dot, .cursor-follower {
+            * { cursor: none !important; }
+            .custom-cursor {
                 position: fixed;
                 top: 0;
                 left: 0;
                 pointer-events: none;
-                border-radius: 50%;
                 z-index: 9999;
-                transition: opacity 0.3s ease;
-            }
-            .cursor-dot {
-                width: 8px;
-                height: 8px;
-                background-color: var(--text-main);
-                transform: translate(-50%, -50%);
-            }
-            .cursor-follower {
-                width: 40px;
-                height: 40px;
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                transform: translate(-50%, -50%);
-                transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+                font-size: 1.25rem;
+                transform: translate(-20%, -20%) rotate(-45deg);
+                transition: transform 0.1s ease-out, font-size 0.2s ease;
+                filter: drop-shadow(0 0 8px rgba(255, 34, 34, 0.4));
             }
         }
 
@@ -88,7 +77,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.25rem 1.5rem;
+            padding: 1.25rem 1.25rem;
             z-index: 100;
             background: linear-gradient(to bottom, rgba(3,3,3,0.95), transparent);
             transition: backdrop-filter 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
@@ -98,14 +87,14 @@
             background-color: rgba(3, 3, 3, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.25rem;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .logo {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             letter-spacing: -0.02em;
             text-transform: uppercase;
         }
@@ -114,7 +103,7 @@
 
         .header-meta {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
             letter-spacing: 0.05em;
             text-transform: uppercase;
@@ -123,85 +112,79 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1.25rem;
         }
 
-        /* HERO / INTRO SECTION */
+        /* MOBILE-FIRST HERO FORMAT */
         .hero {
-            min-height: 75vh;
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding-bottom: 4rem;
-            padding-top: 8rem;
+            padding-bottom: 3rem;
+            padding-top: 7rem;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .hero-title {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: clamp(2.2rem, 8vw, 7rem);
-            line-height: 1.05;
+            font-size: 2.1rem;
+            line-height: 1.1;
             letter-spacing: -0.03em;
             text-transform: uppercase;
-            margin-bottom: 2rem;
-            max-width: 1100px;
+            margin-bottom: 1.5rem;
         }
 
         .hero-title span {
             color: var(--text-muted);
             display: block;
             font-weight: 400;
-            font-size: clamp(1.1rem, 3.5vw, 3rem);
-            margin-top: 0.75rem;
-            letter-spacing: -0.01em;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
         }
 
         .hero-bottom {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            flex-direction: column;
+            gap: 1.25rem;
         }
 
         .hero-desc {
-            max-width: 450px;
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
         }
 
-        /* IMMERSIVE SERVICES SECTION */
+        /* SERVICES SECTION */
         section {
-            padding: 5rem 0;
+            padding: 4rem 0;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .section-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--accent-red);
             letter-spacing: 0.15em;
             text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
         .section-heading {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(1.75rem, 4vw, 3.5rem);
+            font-size: 1.75rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.02em;
         }
 
-        /* Minimalist List Architecture */
+        /* Mobile List Format */
         .services-list {
             display: flex;
             flex-direction: column;
@@ -210,118 +193,98 @@
         .service-row {
             position: relative;
             display: grid;
-            grid-template-columns: 45px 1fr auto;
+            grid-template-columns: 35px 1fr;
             align-items: center;
-            padding: 1.5rem 0;
+            padding: 1.25rem 0;
             border-bottom: 1px solid var(--border-subtle);
             cursor: pointer;
-            transition: padding-left 0.3s ease, background-color 0.3s ease;
+            transition: background-color 0.2s ease, padding-left 0.2s ease;
         }
 
         .service-row:first-child {
             border-top: 1px solid var(--border-subtle);
         }
 
-        .service-row:hover {
-            padding-left: 0.75rem;
+        .service-row:active {
             background-color: var(--surface-color);
+            padding-left: 0.5rem;
         }
 
         .service-index {
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         .service-main-title {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(1rem, 3.5vw, 2.5rem);
+            font-size: 1.05rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.01em;
-            transition: color 0.3s ease;
-        }
-
-        .service-row:hover .service-main-title {
-            color: var(--accent-red);
         }
 
         .service-action-hint {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
+            display: none; /* Hide on mobile to keep clean, show on desktop */
         }
 
-        .service-row:hover .service-action-hint {
-            color: var(--text-main);
-        }
-
-        /* GUARANTEES / PILLARS */
+        /* PILLARS / STANDARDS */
         .pillars-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-top: 2.5rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
         .pillar-card {
-            padding: 2rem;
+            padding: 1.5rem;
             background-color: var(--surface-color);
             border: 1px solid var(--border-subtle);
-            border-top: 2px solid var(--accent-red);
+            border-left: 2px solid var(--accent-red);
         }
 
         .pillar-title {
             font-family: 'Syne', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
         }
 
         .pillar-desc {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* CINEMATIC CONTACT SECTION */
+        /* CONTACT SECTION */
         .contact-section {
-            padding: 6rem 0;
+            padding: 5rem 0;
             text-align: center;
-            position: relative;
         }
 
         .contact-title {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(2rem, 7vw, 6rem);
+            font-size: 2.2rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.03em;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             line-height: 1.1;
         }
 
         .contact-grid {
             display: flex;
-            justify-content: center;
-            gap: 0.85rem;
-            flex-wrap: wrap;
-            margin-bottom: 3rem;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
         }
 
         .action-link {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem 1.5rem;
-            background-color: transparent;
+            padding: 1rem;
+            background-color: var(--surface-color);
             border: 1px solid var(--border-subtle);
             color: var(--text-main);
             font-family: 'JetBrains Mono', monospace;
@@ -330,33 +293,22 @@
             text-transform: uppercase;
             text-decoration: none;
             width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .action-link:hover {
-            border-color: var(--text-main);
-            background-color: var(--text-main);
-            color: var(--bg-color);
+            transition: border-color 0.2s ease;
         }
 
         .action-link.wa {
             border-color: rgba(37, 211, 102, 0.4);
             color: var(--wa-green);
-        }
-
-        .action-link.wa:hover {
-            background-color: var(--wa-green);
-            color: #000;
-            border-color: var(--wa-green);
+            background-color: rgba(37, 211, 102, 0.05);
         }
 
         .studio-meta {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* MODAL STYLES */
@@ -372,11 +324,10 @@
             z-index: 2000;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 1rem;
+            align-items: flex-end; /* Mobile bottom-sheet presentation */
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
         .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -384,12 +335,14 @@
         .modal-box {
             background-color: var(--surface-color);
             border: 1px solid var(--border-subtle);
-            border-left: 3px solid var(--accent-red);
+            border-top: 3px solid var(--accent-red);
             width: 100%;
             max-width: 600px;
-            padding: 2.5rem 1.5rem;
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
             position: relative;
-            transform: translateY(20px);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -397,7 +350,7 @@
 
         .close-btn {
             position: absolute;
-            top: 1rem;
+            top: 1.25rem;
             right: 1.25rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
@@ -410,11 +363,9 @@
             padding: 0.5rem;
         }
 
-        .close-btn:hover { color: var(--text-main); }
-
         #modal-title {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(1.4rem, 5vw, 2.2rem);
+            font-size: 1.5rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.02em;
@@ -424,7 +375,7 @@
 
         #modal-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.7;
             margin-bottom: 2rem;
         }
@@ -442,18 +393,15 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             text-decoration: none;
-            transition: background-color 0.3s ease;
         }
-
-        .modal-cta:hover { background-color: #1ebe5d; }
 
         .modal-logo {
             position: absolute;
-            bottom: 1.25rem;
+            bottom: 0.75rem;
             right: 1.5rem;
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             letter-spacing: 0.05em;
             opacity: 0.25;
@@ -477,33 +425,51 @@
             z-index: 99;
             text-decoration: none;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
-            transition: transform 0.3s ease;
         }
 
-        .fab-wa:hover { transform: scale(1.08); }
-
-        /* DESKTOP MEDIA OVERRIDES */
+        /* ==========================================
+           DESKTOP OVERRIDES (768px and Up)
+           ========================================== */
         @media(min-width: 768px) {
             header, header.scrolled { padding: 2rem 4rem; }
             .logo { font-size: 1.5rem; }
             .header-meta { font-size: 0.75rem; }
             .container { padding: 0 4.25rem; }
+            
             .hero { padding-top: 12rem; padding-bottom: 6rem; min-height: 85vh; }
-            .hero-desc { font-size: 1.05rem; }
+            .hero-title { font-size: clamp(3rem, 6vw, 6rem); max-width: 1100px; }
+            .hero-title span { font-size: clamp(1.5rem, 2.5vw, 2.5rem); margin-top: 1rem; }
+            .hero-bottom { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+            .hero-desc { max-width: 450px; font-size: 1.05rem; }
+            
             section { padding: 8rem 0; }
-            .section-header { margin-bottom: 4rem; }
-            .section-tag { font-size: 0.75rem; }
+            .section-header { margin-bottom: 4rem; display: flex; justify-content: space-between; align-items: baseline; }
+            .section-tag { font-size: 0.75rem; margin-bottom: 0; }
+            .section-heading { font-size: 3rem; }
+            
             .service-row { grid-template-columns: 80px 1fr auto; padding: 2.5rem 0; }
+            .service-row:hover { padding-left: 1.5rem; background-color: var(--surface-color); }
             .service-index { font-size: 0.85rem; }
-            .service-action-hint { font-size: 0.75rem; display: flex; }
+            .service-main-title { font-size: 2.2rem; }
+            .service-action-hint { display: flex; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; gap: 0.5rem; }
+            .service-row:hover .service-action-hint { color: var(--text-main); }
+            .service-row:hover .service-main-title { color: var(--accent-red); }
+
             .pillars-grid { grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-top: 4rem; }
-            .pillar-card { padding: 2.5rem; }
+            .pillar-card { padding: 2.5rem; border-left: 1px solid var(--border-subtle); border-top: 2px solid var(--accent-red); }
+            .pillar-title { font-size: 1.25rem; }
+            .pillar-desc { font-size: 0.95rem; }
+
             .contact-section { padding: 10rem 0; }
-            .contact-grid { gap: 1.5rem; }
+            .contact-title { font-size: 5rem; }
+            .contact-grid { flex-direction: row; justify-content: center; gap: 1.5rem; margin-bottom: 4rem; }
             .action-link { width: auto; padding: 1.25rem 2.5rem; font-size: 0.85rem; }
             .studio-meta { font-size: 0.75rem; }
-            .modal-box { padding: 4rem 3.5rem; }
+
+            .modal-overlay { align-items: center; } /* Centers modal on desktop */
+            .modal-box { padding: 4rem 3.5rem; border-top-left-radius: 0; border-top-right-radius: 0; border-left: 3px solid var(--accent-red); border-top: 1px solid var(--border-subtle); }
             .close-btn { top: 2rem; right: 2rem; font-size: 0.85rem; }
+            #modal-title { font-size: 2.5rem; }
             #modal-desc { font-size: 1.1rem; }
             .modal-cta { padding: 1.25rem; font-size: 0.85rem; }
             .modal-logo { bottom: 2rem; right: 3.5rem; font-size: 0.9rem; }
@@ -513,9 +479,8 @@
 </head>
 <body>
 
-    <!-- Custom Fluid Cursor Elements -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-follower" id="cursor-follower"></div>
+    <!-- Custom Wrench Cursor (Desktop only) -->
+    <div class="custom-cursor" id="custom-cursor">🔧</div>
 
     <div class="scroll-progress" id="scroll-progress"></div>
     
@@ -526,7 +491,7 @@
 
     <div class="container">
 
-        <!-- Cinematic Hero Block -->
+        <!-- Hero Block -->
         <div class="hero">
             <h1 class="hero-title">
                 Precision Auto Electrical & Diagnostics.
@@ -540,11 +505,11 @@
             </div>
         </div>
 
-        <!-- Minimalist Interactive Service Index -->
+        <!-- Service Index -->
         <section>
             <div class="section-header">
                 <div>
-                    <div class="section-tag">01 // CAPABILITIES</div>
+                    <span class="section-tag">01 // CAPABILITIES</span>
                     <h2 class="section-heading">Specialized Services</h2>
                 </div>
             </div>
@@ -600,11 +565,11 @@
             </div>
         </section>
 
-        <!-- Structural Pillars -->
+        <!-- Core Principles -->
         <section style="border-bottom: none;">
             <div class="section-header">
                 <div>
-                    <div class="section-tag">02 // STANDARDS</div>
+                    <span class="section-tag">02 // STANDARDS</span>
                     <h2 class="section-heading">The Core Principles</h2>
                 </div>
             </div>
@@ -625,7 +590,7 @@
             </div>
         </section>
 
-        <!-- Cinematic Contact Block -->
+        <!-- Contact Section -->
         <div class="contact-section">
             <h2 class="contact-title">Ready to service<br>your vehicle?</h2>
             
@@ -648,7 +613,7 @@
         💬
     </a>
 
-    <!-- CINEMATIC MODAL -->
+    <!-- Modal -->
     <div class="modal-overlay" id="serviceModal" onclick="closeModal(event)">
         <div class="modal-box" role="dialog" aria-labelledby="modal-title" aria-modal="true">
             <button class="close-btn" onclick="forceCloseModal()" aria-label="Close Modal">[ CLOSE ]</button>
@@ -659,7 +624,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT ENGINE -->
+    <!-- Script Logic -->
     <script>
         const serviceData = {
             'auto': { title: 'Auto Electrical Fault Finding', desc: 'Complex wiring gremlins, sensor diagnostics, and system drains isolated and repaired with precision equipment.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Auto Electrical Fault Finding' },
@@ -703,37 +668,19 @@
             }
         });
 
-        // Custom Cursor Momentum Engine (Desktop only)
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorFollower = document.getElementById('cursor-follower');
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
-
-        if (window.matchMedia('(pointer: fine)').matches && cursorDot && cursorFollower) {
+        // Custom Wrench Cursor Engine (Desktop only)
+        const cursor = document.getElementById('custom-cursor');
+        if (window.matchMedia('(pointer: fine)').matches && cursor) {
             window.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-20%, -20%) rotate(-45deg)`;
             });
-
-            function animateCursor() {
-                followerX += (mouseX - followerX) * 0.15;
-                followerY += (mouseY - followerY) * 0.15;
-                cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
 
             document.querySelectorAll('a, .service-row, .close-btn, button').forEach(el => {
                 el.addEventListener('mouseenter', () => {
-                    cursorFollower.style.width = '60px';
-                    cursorFollower.style.height = '60px';
-                    cursorFollower.style.borderColor = 'var(--accent-red)';
+                    cursor.style.fontSize = '1.6rem';
                 });
                 el.addEventListener('mouseleave', () => {
-                    cursorFollower.style.width = '40px';
-                    cursorFollower.style.height = '40px';
-                    cursorFollower.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    cursor.style.fontSize = '1.25rem';
                 });
             });
         }
