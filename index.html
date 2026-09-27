@@ -880,7 +880,7 @@
             }
         }
 
-        // Interactive Canvas Background Engine (High-Impact Cursor Tracking)
+        // Interactive Canvas Background Engine (Mouse & Touch Tracking)
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -896,12 +896,26 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        // Mouse tracking
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
         });
 
         window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Touch tracking for Mobile/Tablets
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
             mouse.x = null;
             mouse.y = null;
         });
