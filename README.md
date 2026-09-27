@@ -4,7 +4,7 @@ A sleek, high-octane, mobile-first landing page mockup designed for **FYR_SPEEDZ
 
 Built from the ground up to convert visitors into customers with frictionless contact options, a premium app-like interface, and lightning-fast load times.
 
-🌐 **Live Demo:** [https://necero71.github.io/FYR-SPEDZ-MOCK-UP/](https://necero71.github.io/FYR-SPEEDZ-MOCK-UP/)
+🌐 **Live Demo:** [https://necero71.github.io/FYR-SPEDZ-MOCK-UP/](https://necero71.github.io/FYR-SPEEDZ/)
 
 ## ✨ Key Features
 
