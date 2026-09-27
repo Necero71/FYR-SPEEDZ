@@ -6,16 +6,17 @@
     <title>FYR_SPEEDZ | Auto Electrical & Diagnostics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
+            --bg-color: #030303;
             --surface-color: #0c0c0c;
-            --text-main: #ffffff;
+            --surface-hover: #141414;
+            --text-main: #f3f3f3;
             --text-muted: #888888;
-            --accent-red: #ff0033;
-            --border-raw: #ffffff;
-            --border-subtle: #222222;
+            --accent-red: #ff2222;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 34, 34, 0.4);
             --wa-green: #25D366;
         }
 
@@ -34,8 +35,9 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.4;
+            line-height: 1.5;
             overflow-x: hidden;
+            font-weight: 300;
         }
 
         /* QoL Toast Notification */
@@ -48,13 +50,14 @@
             color: var(--bg-color);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
+            font-weight: 500;
+            padding: 0.6rem 1.25rem;
+            border-radius: 6px;
             z-index: 3000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.2s ease;
-            border: 2px solid var(--bg-color);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .toast.active {
@@ -68,14 +71,15 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 3px;
+            height: 2px;
             background-color: var(--accent-red);
             width: 0%;
             z-index: 1000;
+            transition: width 0.1s linear;
         }
 
         /* ==========================================
-           MOBILE LAYOUT (Brutalist App Format)
+           MOBILE LAYOUT (Smooth App Format)
            ========================================== */
         header {
             position: fixed;
@@ -85,22 +89,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 1rem 1.25rem;
             z-index: 100;
-            background: var(--bg-color);
-            border-bottom: 2px solid var(--border-subtle);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+            background: rgba(3, 3, 3, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
         }
 
-        /* NEW: Animated Scroll State for Header Logo */
         header.scrolled-header {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            border-bottom: 2px solid var(--border-raw);
-        }
-
-        header.scrolled-header .header-meta {
-            color: var(--bg-color);
+            background-color: rgba(3, 3, 3, 0.95);
+            border-bottom: 1px solid var(--border-hover);
         }
 
         .logo {
@@ -109,43 +109,40 @@
             font-size: 1.1rem;
             letter-spacing: -0.03em;
             text-transform: uppercase;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-block;
         }
 
         header.scrolled-header .logo {
-            transform: scale(1.05) skewX(-5deg);
-            letter-spacing: 0.05em;
+            transform: scale(1.03);
         }
 
         .logo span { color: var(--accent-red); }
-        header.scrolled-header .logo span { color: var(--accent-red); }
 
         .header-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            transition: color 0.3s ease;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.25rem;
         }
 
         .hero {
-            padding-top: 5.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid var(--border-subtle);
+            padding-top: 6rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .hero-title {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 2rem;
-            line-height: 1.05;
+            font-size: 1.9rem;
+            line-height: 1.15;
             letter-spacing: -0.03em;
             text-transform: uppercase;
             margin-bottom: 1rem;
@@ -156,39 +153,39 @@
             display: block;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
-            letter-spacing: 0;
+            margin-top: 0.4rem;
+            font-weight: 400;
         }
 
         .hero-desc {
             color: var(--text-muted);
             font-size: 0.85rem;
-            line-height: 1.5;
-            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
         }
 
         section {
-            padding: 2.5rem 0;
-            border-bottom: 2px solid var(--border-subtle);
+            padding: 3.5rem 0;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .section-header {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .section-tag {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             color: var(--accent-red);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
             display: block;
-            font-weight: 700;
+            font-weight: 500;
         }
 
         .section-heading {
             font-family: 'Syne', sans-serif;
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.02em;
@@ -197,42 +194,53 @@
         .services-list {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
+        /* Smooth Card Hover & Active Animation */
         .service-row {
             background-color: var(--surface-color);
-            border: 2px solid var(--border-subtle);
-            padding: 1rem;
+            border: 1px solid var(--border-subtle);
+            padding: 1.1rem 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: all 0.15s ease;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-row:hover {
+            background-color: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: translateX(4px);
         }
 
         .service-row:active {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-        }
-
-        .service-row:active .service-main-title, 
-        .service-row:active .service-action-hint {
-            color: var(--bg-color);
+            transform: scale(0.98);
         }
 
         .service-main-title {
             font-family: 'Syne', sans-serif;
             font-size: 0.95rem;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        .service-row:hover .service-main-title {
+            color: var(--accent-red);
         }
 
         .service-action-hint {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--accent-red);
-            font-weight: 700;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        .service-row:hover .service-action-hint {
+            color: var(--text-main);
         }
 
         .service-index { display: none; }
@@ -240,175 +248,192 @@
         .pillars-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.6rem;
+            gap: 0.75rem;
         }
 
         .pillar-card {
-            padding: 1.1rem;
+            padding: 1.25rem;
             background-color: var(--surface-color);
-            border: 2px solid var(--border-subtle);
-            border-left: 4px solid var(--accent-red);
+            border: 1px solid var(--border-subtle);
+            border-left: 2px solid var(--accent-red);
+            border-radius: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-2px);
         }
 
         .pillar-title {
             font-family: 'Syne', sans-serif;
             font-size: 0.95rem;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
         }
 
         .pillar-desc {
             color: var(--text-muted);
             font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
         }
 
         .contact-section {
-            padding: 3.5rem 0;
+            padding: 4rem 0;
             text-align: center;
         }
 
         .contact-title {
             font-family: 'Syne', sans-serif;
-            font-size: 1.75rem;
+            font-size: 1.8rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.03em;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .contact-grid {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.75rem;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
         }
 
         .action-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0.85rem;
+            padding: 0.9rem;
             background-color: var(--surface-color);
-            border: 2px solid var(--border-subtle);
+            border: 1px solid var(--border-subtle);
             color: var(--text-main);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             text-decoration: none;
-            font-weight: 700;
-            transition: all 0.15s ease;
+            border-radius: 6px;
+            transition: all 0.25s ease;
         }
 
-        .action-link:active {
-            background-color: var(--text-main);
-            color: var(--bg-color);
+        .action-link:hover {
+            border-color: var(--text-main);
+            background-color: var(--surface-hover);
         }
 
         .action-link.wa {
-            border-color: var(--wa-green);
+            border-color: rgba(37, 211, 102, 0.4);
             color: var(--wa-green);
-            background-color: rgba(37, 211, 102, 0.05);
+            background-color: rgba(37, 211, 102, 0.04);
         }
 
         .studio-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.55rem;
             color: var(--text-muted);
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             line-height: 1.6;
         }
 
-        /* Mobile Bottom-Sheet Modal */
+        /* Mobile Bottom-Sheet Modal with Smooth Fade */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(3, 3, 3, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: flex-end;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-box {
             background-color: var(--surface-color);
-            border: 2px solid var(--border-subtle);
-            border-top: 4px solid var(--accent-red);
+            border: 1px solid var(--border-subtle);
+            border-top: 3px solid var(--accent-red);
             width: 100%;
             max-width: 600px;
-            padding: 1.75rem 1rem 1.25rem 1rem;
+            padding: 2rem 1.25rem 1.5rem 1.25rem;
             position: relative;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
             transform: translateY(100%);
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .modal-overlay.active .modal-box { transform: translateY(0); }
 
         .close-btn {
             position: absolute;
-            top: 0.85rem;
-            right: 0.85rem;
+            top: 1rem;
+            right: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-main);
-            background: var(--surface-color);
-            border: 2px solid var(--border-subtle);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: none;
+            border: none;
             text-transform: uppercase;
-            padding: 0.35rem 0.6rem;
+            padding: 0.5rem;
             cursor: pointer;
-            font-weight: 700;
+            transition: color 0.2s ease;
         }
+
+        .close-btn:hover { color: var(--text-main); }
 
         #modal-title {
             font-family: 'Syne', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             font-weight: 800;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            padding-right: 2.5rem;
+            margin-bottom: 0.75rem;
+            padding-right: 2rem;
         }
 
         #modal-desc {
             color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.5;
-            margin-bottom: 1.25rem;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
 
         .modal-cta {
             display: block;
             width: 100%;
             text-align: center;
-            padding: 0.9rem;
+            padding: 1rem;
             background-color: var(--wa-green);
             color: #000;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
             font-size: 0.7rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             text-decoration: none;
-            border: 2px solid var(--wa-green);
+            border-radius: 6px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
         }
+
+        .modal-cta:hover { background-color: #1ebe5d; }
+        .modal-cta:active { transform: scale(0.98); }
 
         .modal-logo {
             position: absolute;
-            bottom: 0.4rem;
-            right: 1rem;
+            bottom: 0.5rem;
+            right: 1.25rem;
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
-            opacity: 0.3;
+            opacity: 0.25;
         }
         .modal-logo span { color: var(--accent-red); }
 
@@ -418,53 +443,55 @@
             right: 16px;
             background-color: var(--wa-green);
             color: #000;
-            width: 44px;
-            height: 44px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             z-index: 99;
             text-decoration: none;
-            border: 2px solid #000;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s ease;
         }
+
+        .fab-wa:hover { transform: scale(1.05); }
 
 
         /* ==========================================
-           DESKTOP LAYOUT (Brutalist Editorial Format)
+           DESKTOP LAYOUT (Smooth Cinematic Format)
            ========================================== */
         @media(min-width: 768px) {
             header {
                 padding: 2rem 4rem;
-                border-bottom: 2px solid var(--border-raw);
-                background: var(--bg-color);
+                background: linear-gradient(to bottom, rgba(3,3,3,0.9), transparent);
+                border-bottom: none;
             }
             header.scrolled-header {
-                background-color: var(--text-main);
-                color: var(--bg-color);
-                border-bottom: 2px solid var(--border-raw);
+                padding: 1.25rem 4rem;
+                background-color: rgba(3, 3, 3, 0.85);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--border-subtle);
             }
-            .logo { font-size: 1.6rem; letter-spacing: -0.04em; }
-            .header-meta { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; }
-            .container { padding: 0 4rem; }
+            .logo { font-size: 1.5rem; }
+            .header-meta { font-size: 0.75rem; letter-spacing: 0.1em; }
+            .container { padding: 0 4.25rem; }
 
             .hero {
-                min-height: 80vh;
+                min-height: 85vh;
                 padding-top: 12rem;
-                padding-bottom: 5rem;
-                border-bottom: 2px solid var(--border-raw);
+                padding-bottom: 6rem;
+                border-bottom: 1px solid var(--border-subtle);
             }
             .hero-title {
-                font-size: clamp(3.5rem, 7vw, 7.5rem);
-                max-width: 1200px;
+                font-size: clamp(3rem, 7vw, 7rem);
+                max-width: 1100px;
                 margin-bottom: 2.5rem;
             }
             .hero-title span {
-                font-size: clamp(1rem, 2vw, 1.5rem);
+                font-size: clamp(1.2rem, 2.5vw, 2rem);
                 margin-top: 1rem;
-                font-family: 'JetBrains Mono', monospace;
             }
             .hero-bottom {
                 display: flex;
@@ -474,125 +501,127 @@
             }
             .hero-desc {
                 max-width: 450px;
-                font-size: 0.95rem;
+                font-size: 1.05rem;
             }
 
             section {
-                padding: 7rem 0;
-                border-bottom: 2px solid var(--border-raw);
+                padding: 8rem 0;
+                border-bottom: 1px solid var(--border-subtle);
             }
             .section-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: baseline;
-                margin-bottom: 3.5rem;
+                margin-bottom: 4rem;
             }
             .section-tag { font-size: 0.75rem; margin-bottom: 0; }
-            .section-heading { font-size: 3rem; }
+            .section-heading { font-size: clamp(2rem, 4vw, 3.5rem); }
 
             .services-list { display: flex; flex-direction: column; gap: 0; }
             .service-row {
                 background-color: transparent;
                 border: none;
-                border-bottom: 2px solid var(--border-subtle);
+                border-bottom: 1px solid var(--border-subtle);
+                border-radius: 0;
                 display: grid;
                 grid-template-columns: 80px 1fr auto;
                 align-items: center;
                 padding: 2.5rem 0;
-                transition: background-color 0.2s ease, padding-left 0.2s ease;
+                transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
             }
-            .service-row:first-child { border-top: 2px solid var(--border-subtle); }
+            .service-row:first-child { border-top: 1px solid var(--border-subtle); }
             .service-row:hover {
-                background-color: var(--text-main);
-                color: var(--bg-color);
                 padding-left: 1.5rem;
-                border-color: var(--border-raw);
-            }
-            .service-row:hover .service-main-title,
-            .service-row:hover .service-index,
-            .service-row:hover .service-action-hint {
-                color: var(--bg-color);
+                background-color: var(--surface-color);
+                border-color: var(--border-subtle);
+                transform: none;
             }
             .service-index {
                 display: block;
                 font-family: 'JetBrains Mono', monospace;
                 color: var(--text-muted);
                 font-size: 0.85rem;
-                font-weight: 700;
             }
             .service-main-title {
-                font-size: clamp(1.75rem, 3vw, 2.75rem);
+                font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+                transition: color 0.3s ease;
             }
+            .service-row:hover .service-main-title { color: var(--accent-red); }
             .service-action-hint {
                 display: flex;
                 font-family: 'JetBrains Mono', monospace;
                 font-size: 0.75rem;
-                color: var(--accent-red);
+                color: var(--text-muted);
+                letter-spacing: 0.1em;
                 text-transform: uppercase;
                 gap: 0.5rem;
-                font-weight: 700;
+                transition: color 0.3s ease;
             }
+            .service-row:hover .service-action-hint { color: var(--text-main); }
 
             .pillars-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 2rem;
-                margin-top: 3.5rem;
+                gap: 3rem;
+                margin-top: 4rem;
             }
             .pillar-card {
                 padding: 2.5rem;
-                border: 2px solid var(--border-raw);
-                border-left: 2px solid var(--border-raw);
-                border-top: 4px solid var(--accent-red);
-                background-color: var(--surface-color);
+                border-radius: 0;
+                border-left: none;
+                border-top: 2px solid var(--accent-red);
             }
+            .pillar-card:hover { transform: translateY(-4px); }
             .pillar-title { font-size: 1.25rem; margin-bottom: 1rem; }
-            .pillar-desc { font-size: 0.9rem; }
+            .pillar-desc { font-size: 0.95rem; }
 
-            .contact-section { padding: 9rem 0; }
-            .contact-title { font-size: clamp(3rem, 6vw, 6rem); margin-bottom: 2.5rem; }
+            .contact-section { padding: 10rem 0; }
+            .contact-title { font-size: clamp(2.5rem, 6vw, 6rem); margin-bottom: 3rem; }
             .contact-grid {
                 flex-direction: row;
                 justify-content: center;
-                gap: 1rem;
-                margin-bottom: 3.5rem;
+                gap: 1.5rem;
+                margin-bottom: 4rem;
             }
             .action-link {
                 width: auto;
                 padding: 1.25rem 2.5rem;
-                font-size: 0.8rem;
-                border: 2px solid var(--border-raw);
+                font-size: 0.85rem;
+                letter-spacing: 0.1em;
+                border-radius: 0;
             }
             .action-link:hover {
                 background-color: var(--text-main);
                 color: var(--bg-color);
+                border-color: var(--text-main);
             }
             .studio-meta { font-size: 0.75rem; }
 
             .modal-overlay { align-items: center; }
             .modal-box {
                 max-width: 650px;
-                padding: 3.5rem;
-                border: 2px solid var(--border-raw);
-                border-top: 4px solid var(--accent-red);
+                padding: 4rem 3.5rem;
+                border-radius: 0;
+                border-top: 1px solid var(--border-subtle);
+                border-left: 3px solid var(--accent-red);
             }
-            .close-btn { top: 1.5rem; right: 1.5rem; font-size: 0.75rem; padding: 0.5rem 0.8rem; }
-            #modal-title { font-size: 2.25rem; margin-bottom: 1rem; }
-            #modal-desc { font-size: 1rem; margin-bottom: 2.5rem; }
-            .modal-cta { padding: 1.15rem; font-size: 0.8rem; border: 2px solid var(--wa-green); }
-            .modal-logo { bottom: 1.5rem; right: 2rem; font-size: 0.8rem; opacity: 0.3; }
-            .fab-wa { bottom: 30px; right: 30px; width: 55px; height: 55px; font-size: 1.5rem; border: 2px solid var(--border-raw); }
+            .close-btn { top: 2rem; right: 2rem; font-size: 0.85rem; }
+            #modal-title { font-size: clamp(2rem, 3vw, 2.5rem); margin-bottom: 1.5rem; }
+            #modal-desc { font-size: 1.1rem; margin-bottom: 3rem; }
+            .modal-cta { padding: 1.25rem; font-size: 0.85rem; border-radius: 0; }
+            .modal-logo { bottom: 2rem; right: 3.5rem; font-size: 0.9rem; opacity: 0.2; }
+            .fab-wa { bottom: 30px; right: 30px; width: 55px; height: 55px; font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="toast" id="qol-toast">[ SYSTEM: COPIED TO CLIPBOARD ]</div>
+    <div class="toast" id="qol-toast">Copied to clipboard!</div>
 
     <div class="scroll-progress" id="scroll-progress"></div>
     
     <header id="main-header">
         <div class="logo"><span>FYR_</span>SPEEDZ</div>
-        <div class="header-meta">[ CPT // MOBILE ACTIVE ]</div>
+        <div class="header-meta">CAPE TOWN // MOBILE</div>
     </header>
 
     <div class="container">
@@ -601,13 +630,13 @@
         <div class="hero">
             <h1 class="hero-title">
                 Precision Auto Electrical & Diagnostics.
-                <span>// BOOK TO AVOID DISAPPOINTMENT</span>
+                <span>Book to avoid disappointment.</span>
             </h1>
             <div class="hero-bottom">
                 <p class="hero-desc">
-                    [01] HIGH-PERFORMANCE STANDARDS, COMPLEX TROUBLESHOOTING & MOBILE EXECUTION ACROSS CAPE TOWN.
+                    Engineered for high-performance standards, complex troubleshooting, and flawless execution. Based in Cape Town with fully mobile services available.
                 </p>
-                <div class="header-meta" style="color: var(--text-main); display: none; @media(min-width: 768px){display:block;}">[ SCROLL TO NAVIGATE ]</div>
+                <div class="header-meta" style="color: var(--text-main); display: none; @media(min-width: 768px){display:block;}">[ SCROLL TO EXPLORE ]</div>
             </div>
         </div>
 
@@ -615,7 +644,7 @@
         <section>
             <div class="section-header">
                 <div>
-                    <span class="section-tag">// 01_CAPABILITIES</span>
+                    <span class="section-tag">01 // CAPABILITIES</span>
                     <h2 class="section-heading">Specialized Services</h2>
                 </div>
             </div>
@@ -624,58 +653,64 @@
                 <div class="service-row" tabindex="0" onclick="openModal('auto')" onkeydown="handleKey(event, 'auto')">
                     <span class="service-index">01</span>
                     <div class="service-main-title">Auto Electrical Fault Finding</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('starter')" onkeydown="handleKey(event, 'starter')">
                     <span class="service-index">02</span>
                     <div class="service-main-title">Starter Rebuilding</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('alternator')" onkeydown="handleKey(event, 'alternator')">
                     <span class="service-index">03</span>
                     <div class="service-main-title">Alternator Rebuilding</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('minor')" onkeydown="handleKey(event, 'minor')">
                     <span class="service-index">04</span>
                     <div class="service-main-title">Minor Vehicle Services</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('diag')" onkeydown="handleKey(event, 'diag')">
                     <span class="service-index">05</span>
                     <div class="service-main-title">Vehicle Diagnostics & Code Clearing</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
+                </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('battery')" onkeydown="handleKey(event, 'battery')">
+                    <span class="service-index">06</span>
+                    <div class="service-main-title">Battery Testing</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('led')" onkeydown="handleKey(event, 'led')">
-                    <span class="service-index">06</span>
+                    <span class="service-index">07</span>
                     <div class="service-main-title">LED / Light Upgrades</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('dashcam')" onkeydown="handleKey(event, 'dashcam')">
-                    <span class="service-index">07</span>
+                    <span class="service-index">08</span>
                     <div class="service-main-title">Dash Cam Installations</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('cctv')" onkeydown="handleKey(event, 'cctv')">
-                    <span class="service-index">08</span>
+                    <span class="service-index">09</span>
                     <div class="service-main-title">CCTV Installations</div>
-                    <div class="service-action-hint">VIEW [↗]</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
             </div>
         </section>
 
         <!-- Core Principles -->
-        <section style="border-bottom: 2px solid var(--border-raw);">
+        <section style="border-bottom: none;">
             <div class="section-header">
                 <div>
-                    <span class="section-tag">// 02_STANDARDS</span>
+                    <span class="section-tag">02 // STANDARDS</span>
                     <h2 class="section-heading">The Core Principles</h2>
                 </div>
             </div>
@@ -683,15 +718,15 @@
             <div class="pillars-grid">
                 <div class="pillar-card">
                     <div class="pillar-title">Quality Workmanship</div>
-                    <p class="pillar-desc">Rigorous diagnostic paths and precise technical execution ensuring electronic reliability.</p>
+                    <p class="pillar-desc">Rigorous diagnostic paths and precise technical execution ensuring structural and electronic reliability.</p>
                 </div>
                 <div class="pillar-card">
                     <div class="pillar-title">Reliable Service</div>
-                    <p class="pillar-desc">Honest diagnostics, direct communication, and transparent solutions for vehicle integrity.</p>
+                    <p class="pillar-desc">Honest diagnostics, direct communication, and transparent solutions designed to protect your vehicle integrity.</p>
                 </div>
                 <div class="pillar-card">
                     <div class="pillar-title">Fast Turnaround</div>
-                    <p class="pillar-desc">Optimized workflow mechanics geared toward minimizing vehicle downtime safely.</p>
+                    <p class="pillar-desc">Optimized workflow mechanics geared toward minimizing vehicle downtime without sacrificing analytical depth.</p>
                 </div>
             </div>
         </section>
@@ -708,7 +743,7 @@
             </div>
 
             <div class="studio-meta" onclick="copyToClipboard(event, 'Cape Town, Mobile Service Active')">
-                [ LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABLE — TAP TO COPY ]
+                LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABILITY ACTIVE [TAP TO COPY]
             </div>
         </div>
 
@@ -738,6 +773,7 @@
             'alternator': { title: 'Alternator Rebuilding', desc: 'Professional output testing, diode checks, and internal rebuilding to guarantee steady power delivery.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Alternator Rebuilding' },
             'minor': { title: 'Minor Vehicle Services', desc: 'Routine preventative maintenance, fluid exchanges, filter swaps, and total mechanical health reviews.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Minor Vehicle Services' },
             'diag': { title: 'Vehicle Diagnostics', desc: 'Advanced electronic scanning to read error matrices, clear warning flags, and locate root mechanical issues.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Vehicle Diagnostics' },
+            'battery': { title: 'Battery Testing', desc: 'Accurate state-of-health and load testing to check cell capacity and prevent unexpected dead batteries.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Battery Testing' },
             'led': { title: 'LED & Light Upgrades', desc: 'High-performance illumination enhancements, custom beam tuning, and clean cosmetic lighting upgrades.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about LED / Light Upgrades' },
             'dashcam': { title: 'Dash Cam Installations', desc: 'Clean, hardwired multi-channel security setups with concealed cable routing for total peace of mind.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Dash Cam Installations' },
             'cctv': { title: 'CCTV Installations', desc: 'Commercial-grade residential and workshop camera frameworks engineered for absolute property monitoring.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about CCTV Installations' }
@@ -778,7 +814,7 @@
             if(text.includes('Cape Town')) {
                 e.preventDefault();
                 navigator.clipboard.writeText(text);
-                showToast("[ SYSTEM: LOCATION COPIED ]");
+                showToast("Location copied to clipboard!");
             }
         }
 
@@ -791,7 +827,7 @@
             }, 2500);
         }
 
-        // Scroll Engine for Progress bar & Logo Header Animation
+        // Scroll Progress & Smooth Header State
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             const progressBar = document.getElementById('scroll-progress');
@@ -801,7 +837,7 @@
             } else {
                 header.classList.remove('scrolled-header');
             }
-
+            
             const totalScroll = document.documentElement.scrollTop;
             const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             progressBar.style.width = `${(totalScroll / windowHeight) * 100}%`;
