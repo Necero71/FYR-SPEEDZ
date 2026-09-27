@@ -89,6 +89,18 @@
             z-index: 100;
             background: var(--bg-color);
             border-bottom: 2px solid var(--border-subtle);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+        }
+
+        /* NEW: Animated Scroll State for Header Logo */
+        header.scrolled-header {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border-bottom: 2px solid var(--border-raw);
+        }
+
+        header.scrolled-header .header-meta {
+            color: var(--bg-color);
         }
 
         .logo {
@@ -97,15 +109,24 @@
             font-size: 1.1rem;
             letter-spacing: -0.03em;
             text-transform: uppercase;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.3s ease;
+            display: inline-block;
+        }
+
+        header.scrolled-header .logo {
+            transform: scale(1.05) skewX(-5deg);
+            letter-spacing: 0.05em;
         }
 
         .logo span { color: var(--accent-red); }
+        header.scrolled-header .logo span { color: var(--accent-red); }
 
         .header-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
             color: var(--text-muted);
             text-transform: uppercase;
+            transition: color 0.3s ease;
         }
 
         .container {
@@ -419,6 +440,11 @@
                 padding: 2rem 4rem;
                 border-bottom: 2px solid var(--border-raw);
                 background: var(--bg-color);
+            }
+            header.scrolled-header {
+                background-color: var(--text-main);
+                color: var(--bg-color);
+                border-bottom: 2px solid var(--border-raw);
             }
             .logo { font-size: 1.6rem; letter-spacing: -0.04em; }
             .header-meta { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; }
@@ -765,8 +791,17 @@
             }, 2500);
         }
 
+        // Scroll Engine for Progress bar & Logo Header Animation
         window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
             const progressBar = document.getElementById('scroll-progress');
+            
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled-header');
+            } else {
+                header.classList.remove('scrolled-header');
+            }
+
             const totalScroll = document.documentElement.scrollTop;
             const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             progressBar.style.width = `${(totalScroll / windowHeight) * 100}%`;
