@@ -40,7 +40,7 @@
             font-weight: 300;
         }
 
-        /* Interactive Canvas Background */
+        /* Liquid Smoke Canvas Background */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -49,6 +49,8 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
+            filter: blur(40px); /* Creates the soft smoke/liquid fusion effect */
+            opacity: 0.65;
         }
 
         /* QoL Toast Notification */
@@ -612,7 +614,7 @@
 </head>
 <body>
 
-    <!-- Interactive Canvas Background -->
+    <!-- Liquid Smoke Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
     <!-- Uploaded Deep Space Ambient Audio Element -->
@@ -837,138 +839,86 @@
             }
         }
 
-        // Interactive Canvas Background Engine (Amplified Mobile Touch & Mouse Tracking)
+        // Liquid Smoke / Organic Fluid Canvas Engine
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         
         let width, height;
-        let particles = [];
-        // Increased interaction radius and pull strength for mobile responsiveness
-        const mouse = { x: null, y: null, radius: window.innerWidth < 768 ? 220 : 180 };
+        let blobs = [];
+        const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
 
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            mouse.radius = width < 768 ? 220 : 180;
         }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Mouse tracking
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
+            pointer.targetX = e.clientX;
+            pointer.targetY = e.clientY;
         });
-
-        window.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        // Amplified Touch tracking for Mobile/Tablets
-        window.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 0) {
-                mouse.x = e.touches[0].clientX;
-                mouse.y = e.touches[0].clientY;
-            }
-        }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
             if (e.touches.length > 0) {
-                mouse.x = e.touches[0].clientX;
-                mouse.y = e.touches[0].clientY;
+                pointer.targetX = e.touches[0].clientX;
+                pointer.targetY = e.touches[0].clientY;
             }
         }, { passive: true });
 
-        window.addEventListener('touchend', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        class Particle {
+        class LiquidBlob {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 1.8 + 0.6;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
+                this.radius = Math.random() * 120 + 90;
+                this.color = Math.random() > 0.4 ? 'rgba(255, 34, 34, 0.35)' : 'rgba(80, 80, 80, 0.25)';
             }
 
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
 
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
+                if (this.x < -100 || this.x > width + 100) this.vx *= -1;
+                if (this.y < -100 || this.y > height + 100) this.vy *= -1;
 
-                if (mouse.x !== null && mouse.y !== null) {
-                    const mdx = mouse.x - this.x;
-                    const mdy = mouse.y - this.y;
-                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-                    if (mdist < mouse.radius) {
-                        // Amplified magnetic attraction pull toward touch/cursor
-                        this.x += mdx * 0.03;
-                        this.y += mdy * 0.03;
-                    }
-                }
+                // Gentle drift toward cursor / touch point
+                const dx = pointer.x - this.x;
+                const dy = pointer.y - this.y;
+                this.x += dx * 0.012;
+                this.y += dy * 0.012;
             }
 
             draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        function initParticles() {
-            particles = [];
-            const count = Math.floor((width * height) / 14000);
+        function initBlobs() {
+            blobs = [];
+            const count = 7; // Number of organic fluid nodes
             for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
+                blobs.push(new LiquidBlob());
             }
         }
 
-        initParticles();
+        initBlobs();
 
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
+            // Smooth interpolation for pointer tracking
+            pointer.x += (pointer.targetX - pointer.x) * 0.06;
+            pointer.y += (pointer.targetY - pointer.y) * 0.06;
 
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 120) {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.07 * (1 - dist / 120)})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-
-                if (mouse.x !== null && mouse.y !== null) {
-                    const mdx = particles[i].x - mouse.x;
-                    const mdy = particles[i].y - mouse.y;
-                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-
-                    if (mdist < mouse.radius) {
-                        // High-visibility amplified red vectors locking onto touch/cursor
-                        ctx.strokeStyle = `rgba(255, 34, 34, ${0.45 * (1 - mdist / mouse.radius)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.stroke();
-                    }
-                }
+            for (let i = 0; i < blobs.length; i++) {
+                blobs[i].update();
+                blobs[i].draw();
             }
 
             requestAnimationFrame(animateCanvas);
