@@ -6,16 +6,15 @@
     <title>FYR_SPEEDZ | Auto Electrical & Diagnostics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;0,900;1,900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #070707; 
-            --surface-dark: #121212;
-            --fyr-red: #d30000;
-            --fyr-red-hover: #ff1a1a;
-            --text-main: #ffffff;
-            --text-muted: #999999;
-            --border-color: #2a2a2a;
+            --bg-color: #030303;
+            --surface-color: #0a0a0a;
+            --text-main: #f3f3f3;
+            --text-muted: #777777;
+            --accent-red: #ff2222;
+            --border-subtle: rgba(255, 255, 255, 0.08);
             --wa-green: #25D366;
             --yt-red: #FF0000;
         }
@@ -24,617 +23,630 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            cursor: none; /* Hide default cursor to use custom fluid follower */
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            /* Topographic Circuitry SVG Background with Dark Radial Vignette */
-            background-image: 
-                radial-gradient(circle at 50% 10%, rgba(7, 7, 7, 0.2) 0%, rgba(7, 7, 7, 1) 90%),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83v15.828L50 22.115v9.414l4.586 4.585v15.828l-.828.828h-15.83l-5.457-5.457H22.114l-5.456 5.457H.83L0 51.543V35.714l4.586-4.586v-9.414L0 17.128V1.302L.828.474h15.83l5.457 5.457h10.355l5.457-5.457h15.83zM28.97 49.03L34.427 54.486h9.172l4.586-4.586v-9.172l-4.586-4.586h-9.172l-5.457 5.457v7.43zM34.427 5.514L28.97 10.97v7.43l5.457 5.457h9.172l4.586-4.586v-9.172l-4.586-4.586h-9.172zM10.97 28.97l-5.456-5.457v-9.172l4.586-4.586h9.172l5.457 5.457v7.43l-5.457 5.457h-8.302zM10.97 54.486l-5.456-5.457v-9.172l4.586-4.586h8.302l5.457 5.457v7.43l-5.457 5.457h-9.172z' fill-rule='evenodd' stroke='%23ffffff' stroke-width='1' stroke-opacity='0.05' fill='none'/%3E%3C/svg%3E");
-            background-attachment: fixed;
+            background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.5;
-            overflow-x: hidden; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-weight: 300;
         }
 
+        /* CUSTOM FLUID CURSOR */
+        .cursor-dot, .cursor-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+        }
+
+        body:hover .cursor-dot, body:hover .cursor-follower { opacity: 1; }
+
+        /* SCROLL PROGRESS */
         .scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
-            height: 4px;
-            background-color: var(--fyr-red);
+            height: 2px;
+            background-color: var(--accent-red);
             width: 0%;
             z-index: 1000;
-            box-shadow: 0 0 12px rgba(211, 0, 0, 0.9);
-            transition: width 0.1s ease-out;
+            transition: width 0.1s linear;
         }
 
+        /* CINEMATIC HEADER */
         header {
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 50;
-            text-align: center;
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid transparent;
-            /* Header uses a clean transparent start to let the circuit bg shine through */
-            background-color: transparent;
-            transition: all 0.3s ease;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(3,3,3,0.9), transparent);
+            transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
         }
 
         header.scrolled {
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-            background-color: rgba(7, 7, 7, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 2px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background-color: rgba(3, 3, 3, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1.25rem 4rem;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            /* Fluid Typography: Scales perfectly between mobile and desktop */
-            font-size: clamp(2.5rem, 9vw, 4rem); 
-            line-height: 1.1;
-            letter-spacing: 1px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.02em;
             text-transform: uppercase;
-            margin-bottom: 0.25rem;
-            transition: font-size 0.3s ease;
         }
 
-        header.scrolled .logo { font-size: clamp(2rem, 7vw, 2.5rem); margin-bottom: 0; }
-        .logo span { color: var(--fyr-red); }
+        .logo span { color: var(--accent-red); }
 
-        .tagline {
-            font-family: 'JetBrains Mono', monospace; 
-            color: var(--fyr-red);
-            font-weight: 700;
-            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
-            letter-spacing: 1.5px;
+        .header-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            transition: opacity 0.3s ease, height 0.3s ease;
-        }
-
-        header.scrolled .tagline {
-            opacity: 0; 
-            height: 0;
-            overflow: hidden;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1.25rem 1.5rem 1.25rem; /* Better mobile breathing room */
+            padding: 0 4.25rem;
         }
 
-        .intro-text {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 3rem;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        section { margin-bottom: 3rem; }
-
-        .section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.6rem;
-            font-style: italic;
-            margin-bottom: 1.25rem;
-            text-transform: uppercase;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        .services-grid {
-            display: grid;
-            /* Fluid Grid: Auto-adjusts columns based on exact phone width */
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.85rem; 
-        }
-
-        .service-card {
-            position: relative;
-            background-color: rgba(18, 18, 18, 0.85); /* Semi-transparent to reveal BG */
-            backdrop-filter: blur(4px);
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 4px);
-            border: 1px solid var(--border-color);
-            border-left: 3px solid var(--fyr-red);
-            padding: 1.25rem 0.75rem; 
+        /* HERO / INTRO SECTION */
+        .hero {
+            min-height: 85vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; 
-            color: inherit; 
-            cursor: pointer;
-            height: 120px; /* Slightly taller for mobile tap areas */
-            overflow: hidden;
-            border-radius: 4px;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-            outline: none; 
+            justify-content: flex-end;
+            padding-bottom: 6rem;
+            padding-top: 12rem;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .service-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            width: 0%;
-            background-color: var(--fyr-red);
-            transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .service-card:hover {
-            transform: translateY(-3px) scale(1.02); 
-            background-color: rgba(26, 26, 26, 0.95);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-
-        .service-card:hover::after { width: 100%; }
-        .service-card:active { transform: scale(0.96); }
-
-        .service-card:focus-visible {
-            border-color: var(--fyr-red);
-            box-shadow: 0 0 0 3px rgba(211,0,0,0.5);
-        }
-
-        .service-content {
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .service-title {
-            font-family: 'Montserrat', sans-serif;
+        .hero-title {
+            font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-style: italic;
-            font-size: clamp(0.9rem, 4vw, 1.1rem); /* Fluid text preventing wrap issues */
-            line-height: 1.1;
+            font-size: clamp(3rem, 7vw, 7rem);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
             text-transform: uppercase;
-            margin-bottom: 0.35rem;
+            margin-bottom: 2.5rem;
+            max-width: 1100px;
         }
 
-        .service-sub {
-            font-family: 'JetBrains Mono', monospace; 
-            color: var(--fyr-red);
-            font-size: 0.65rem; 
+        .hero-title span {
+            color: var(--text-muted);
+            display: block;
+            font-weight: 400;
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            margin-top: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .hero-desc {
+            max-width: 450px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* IMMERSIVE SERVICES SECTION */
+        section {
+            padding: 8rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-red);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .section-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        /* Unseen-style Minimalist List Architecture */
+        .services-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-row {
+            position: relative;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            align-items: center;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+        }
+
+        .service-row:first-child {
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .service-row:hover {
+            padding-left: 1.5rem;
+            background-color: var(--surface-color);
+        }
+
+        .service-index {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .service-main-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem);
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
         }
 
-        /* MODAL STYLES */
+        .service-row:hover .service-main-title {
+            color: var(--accent-red);
+        }
+
+        .service-action-hint {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .service-row:hover .service-action-hint {
+            color: var(--text-main);
+        }
+
+        /* GUARANTEES / PILLARS */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .pillar-card {
+            padding: 2.5rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-subtle);
+            border-top: 2px solid var(--accent-red);
+        }
+
+        .pillar-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pillar-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* CINEMATIC CONTACT SECTION */
+        .contact-section {
+            padding: 10rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .contact-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 6rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+            margin-bottom: 3rem;
+            line-height: 1;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 2.5rem;
+            background-color: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .action-link:hover {
+            border-color: var(--text-main);
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        .action-link.wa {
+            border-color: rgba(37, 211, 102, 0.4);
+            color: var(--wa-green);
+        }
+
+        .action-link.wa:hover {
+            background-color: var(--wa-green);
+            color: #000;
+            border-color: var(--wa-green);
+        }
+
+        .studio-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* MODAL STYLES (Unseen Cinematic Overlay) */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 200;
+            background-color: rgba(3, 3, 3, 0.9);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 2rem;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-box {
-            background-color: var(--bg-dark);
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 4px);
-            border: 1px solid var(--border-color);
-            border-top: 4px solid var(--fyr-red);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--accent-red);
             width: 100%;
-            max-width: 500px;
-            /* Mobile safe-height to prevent scrolling issues */
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 2.5rem 1.5rem 3.5rem 1.5rem; 
+            max-width: 650px;
+            padding: 4rem 3.5rem;
             position: relative;
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(30px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
 
         .close-btn {
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+            top: 2rem;
+            right: 2rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.75rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             cursor: pointer;
             background: none;
             border: none;
-            padding: 0.5rem 1rem; /* Expanded hit area for fat fingers */
-            line-height: 1;
-            transition: color 0.2s ease;
-            z-index: 10;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
         }
 
-        .close-btn:hover, .close-btn:focus-visible { color: var(--fyr-red); outline: none; }
+        .close-btn:hover { color: var(--text-main); }
 
         #modal-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: 1.5rem;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            font-weight: 800;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-            position: relative;
-            z-index: 2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
         }
 
         #modal-desc {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            position: relative;
-            z-index: 2;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
         }
 
-        #modal-wa-btn { 
-            display: block; 
-            width: 100%; 
-            text-align: center; 
-            position: relative;
-            z-index: 2;
-            clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+        .modal-cta {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 1.25rem;
+            background-color: var(--wa-green);
+            color: #000;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
+        .modal-cta:hover { background-color: #1ebe5d; transform: translateY(-2px); }
 
         .modal-logo {
             position: absolute;
-            bottom: 1rem;
-            right: 1.5rem;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 1;
-        }
-        
-        .modal-logo span { color: var(--fyr-red); }
-
-        .modal-overlay.active .modal-logo {
-            animation: logo-slide-in 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards, 
-                       logo-pulse 3s infinite 0.6s;
-        }
-
-        @keyframes logo-slide-in {
-            0% { opacity: 0; transform: translateX(30px); }
-            100% { opacity: 0.35; transform: translateX(0); }
-        }
-
-        @keyframes logo-pulse {
-            0%, 100% { opacity: 0.35; text-shadow: none; }
-            50% { opacity: 0.75; text-shadow: 0 0 10px rgba(211, 0, 0, 0.6); }
-        }
-
-        /* GUARANTEES BAR */
-        .guarantees {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            background-color: var(--surface-dark);
-            padding: 1.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
-        }
-
-        .guarantee-item { 
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700; 
-            font-size: 0.85rem; 
-            letter-spacing: 1px;
-        }
-        
-        .guarantee-item span { color: var(--fyr-red); display: block; font-size: 1.1rem;}
-
-        /* CTA & CONTACT SECTION */
-        .cta-section {
-            text-align: center;
-            background: linear-gradient(180deg, var(--surface-dark) 0%, #0d0000 100%);
-            padding: 2.5rem 1rem;
-            border: 1px solid var(--fyr-red);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
-            margin-bottom: 6rem; 
-        }
-
-        .book-now {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: 2.2rem;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-        }
-
-        .cta-tag {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--fyr-red);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .contact-info {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .contact-btn {
-            display: inline-block;
-            background-color: rgba(211, 0, 0, 0.1);
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 1rem 1.5rem;
-            border: 1px solid rgba(211, 0, 0, 0.3);
-            font-family: 'Montserrat', sans-serif;
-            font-style: italic;
+            bottom: 2rem;
+            right: 3.5rem;
+            font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            opacity: 0.2;
         }
+        .modal-logo span { color: var(--accent-red); }
 
-        .contact-btn:hover {
-            background-color: rgba(211, 0, 0, 0.2);
-            border-color: var(--fyr-red-hover);
-        }
-
-        .contact-btn:active { transform: scale(0.97); }
-
-        .wa-btn { background-color: var(--wa-green); color: #000; border: none; }
-        .wa-btn:hover { background-color: #1ebe5d; border: none; }
-        .yt-btn { background-color: var(--yt-red); color: #ffffff; border: none; }
-        .yt-btn:hover { background-color: #cc0000; border: none; }
-
-        /* Floating Action Button (FAB) */
+        /* FLOATING ACTION BUTTON */
         .fab-wa {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             background-color: var(--wa-green);
             color: #000;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            font-size: 1.5rem;
             z-index: 99;
             text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .fab-wa:hover { 
-            transform: scale(1.05) translateY(-3px); 
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-            background-color: #1ebe5d;
-        }
-        
-        .fab-wa:active { transform: scale(0.95); }
+        .fab-wa:hover { transform: scale(1.1) translateY(-4px); }
 
-        .location {
-            margin-top: 1.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 0.75rem;
-        }
-        .location span { color: var(--fyr-red); font-weight: 700; }
-
-        .reveal-up { transform: translateY(40px); opacity: 0; }
-        .reveal-left { transform: translateX(-40px); opacity: 0; }
-        .reveal-right { transform: translateX(40px); opacity: 0; }
-
-        .reveal-up, .reveal-left, .reveal-right {
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform; 
-        }
-
-        .reveal-up.active, .reveal-left.active, .reveal-right.active {
-            opacity: 1;
-            transform: translate(0);
-        }
-
-        @media(min-width: 600px) {
-            .container { padding: 0 1.5rem 3rem 1.5rem; }
-            .section-title { font-size: 2rem; text-align: left; }
-            .services-grid { gap: 1rem; }
-            .service-card { height: 130px; padding: 1.25rem; border-left: 4px solid var(--fyr-red); }
-            .service-title { font-size: 1.2rem; margin-bottom: 0.25rem; }
-            .service-sub { font-size: 0.8rem; }
-            .guarantees { flex-direction: row; justify-content: space-around; clip-path: polygon(20px 0, 100% 0, calc(100% - 20px) 100%, 0 100%); }
-            .book-now { font-size: 3rem; }
-            .contact-info { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 1.5rem; }
-            .contact-btn { min-width: 250px; }
-            .fab-wa { bottom: 30px; right: 30px; width: 70px; height: 70px; font-size: 2.2rem; }
+        /* RESPONSIVE DESIGN */
+        @media(max-width: 900px) {
+            header, header.scrolled { padding: 1.5rem 2rem; }
+            .container { padding: 0 1.5rem; }
+            .pillars-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .service-row { grid-template-columns: 50px 1fr; }
+            .service-action-hint { display: none; }
+            .modal-box { padding: 3rem 2rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Custom Fluid Cursor Elements -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
     <div class="scroll-progress" id="scroll-progress"></div>
     
     <header id="main-header">
         <div class="logo"><span>FYR_</span>SPEEDZ</div>
-        <div class="tagline">>> Book to avoid disappointment_</div>
+        <div class="header-meta">CAPE TOWN // EST. 202X</div>
     </header>
 
     <div class="container">
 
-        <div class="intro-text reveal-up">
-            FYR_SPEEDZ specializes in professional auto electrical services, vehicle diagnostics, starter & alternator rebuilding, minor vehicle servicing, LED/light upgrades, dash cam installations, and CCTV installations. We pride ourselves on quality workmanship, reliable service, and fast turnaround, with mobile service available. 🚗⚡
+        <!-- Cinematic Hero Block -->
+        <div class="hero">
+            <h1 class="hero-title">
+                Precision Auto Electrical & Diagnostics.
+                <span>Book to avoid disappointment.</span>
+            </h1>
+            <div class="hero-bottom">
+                <p class="hero-desc">
+                    Engineered for high-performance standards, complex troubleshooting, and flawless execution. Based in Cape Town with fully mobile services available.
+                </p>
+                <div class="header-meta" style="color: var(--text-main);">[ SCROLL TO EXPLORE ]</div>
+            </div>
         </div>
 
+        <!-- Minimalist Interactive Service Index -->
         <section>
-            <h2 class="section-title reveal-up">Specialise In</h2>
-            <div class="services-grid">
-                
-                <div class="reveal-left">
-                    <div class="service-card" tabindex="0" onclick="openModal('auto')" onkeydown="handleKey(event, 'auto')">
-                        <div class="service-content">
-                            <div class="service-title">Auto Electrical</div>
-                            <div class="service-sub">SYS_FAULT_FINDING</div>
-                        </div>
-                    </div>
+            <div class="section-header">
+                <div>
+                    <div class="section-tag">01 // CAPABILITIES</div>
+                    <h2 class="section-heading">Specialized Services</h2>
                 </div>
-                
-                <div class="reveal-right">
-                    <div class="service-card" tabindex="0" onclick="openModal('starter')" onkeydown="handleKey(event, 'starter')">
-                        <div class="service-content">
-                            <div class="service-title">Starter</div>
-                            <div class="service-sub">REBUILD_PROTOCOL</div>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="services-list">
+                <div class="service-row" tabindex="0" onclick="openModal('auto')" onkeydown="handleKey(event, 'auto')">
+                    <span class="service-index">01</span>
+                    <div class="service-main-title">Auto Electrical Fault Finding</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-left">
-                    <div class="service-card" tabindex="0" onclick="openModal('alternator')" onkeydown="handleKey(event, 'alternator')">
-                        <div class="service-content">
-                            <div class="service-title">Alternator</div>
-                            <div class="service-sub">POWER_REBUILD</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('starter')" onkeydown="handleKey(event, 'starter')">
+                    <span class="service-index">02</span>
+                    <div class="service-main-title">Starter Rebuilding</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-right">
-                    <div class="service-card" tabindex="0" onclick="openModal('minor')" onkeydown="handleKey(event, 'minor')">
-                        <div class="service-content">
-                            <div class="service-title">Minor Vehicle</div>
-                            <div class="service-sub">MAINTENANCE_LOG</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('alternator')" onkeydown="handleKey(event, 'alternator')">
+                    <span class="service-index">03</span>
+                    <div class="service-main-title">Alternator Rebuilding</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-left">
-                    <div class="service-card" tabindex="0" onclick="openModal('diag')" onkeydown="handleKey(event, 'diag')">
-                        <div class="service-content">
-                            <div class="service-title">Vehicle Diag</div>
-                            <div class="service-sub">OBD2_SCANNING</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('minor')" onkeydown="handleKey(event, 'minor')">
+                    <span class="service-index">04</span>
+                    <div class="service-main-title">Minor Vehicle Services</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-right">
-                    <div class="service-card" tabindex="0" onclick="openModal('led')" onkeydown="handleKey(event, 'led')">
-                        <div class="service-content">
-                            <div class="service-title">LED / Light</div>
-                            <div class="service-sub">LUMEN_UPGRADE</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('diag')" onkeydown="handleKey(event, 'diag')">
+                    <span class="service-index">05</span>
+                    <div class="service-main-title">Vehicle Diagnostics & Code Clearing</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-left">
-                    <div class="service-card" tabindex="0" onclick="openModal('dashcam')" onkeydown="handleKey(event, 'dashcam')">
-                        <div class="service-content">
-                            <div class="service-title">Dash Cam</div>
-                            <div class="service-sub">DVR_INSTALL</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('led')" onkeydown="handleKey(event, 'led')">
+                    <span class="service-index">06</span>
+                    <div class="service-main-title">LED / Light Upgrades</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
-                
-                <div class="reveal-right">
-                    <div class="service-card" tabindex="0" onclick="openModal('cctv')" onkeydown="handleKey(event, 'cctv')">
-                        <div class="service-content">
-                            <div class="service-title">CCTV Security</div>
-                            <div class="service-sub">CAM_INSTALLATION</div>
-                        </div>
-                    </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('dashcam')" onkeydown="handleKey(event, 'dashcam')">
+                    <span class="service-index">07</span>
+                    <div class="service-index"></div>
+                    <div class="service-main-title">Dash Cam Installations</div>
+                    <div class="service-action-hint">Explore ↗</div>
+                </div>
+
+                <div class="service-row" tabindex="0" onclick="openModal('cctv')" onkeydown="handleKey(event, 'cctv')">
+                    <span class="service-index">08</span>
+                    <div class="service-main-title">CCTV Installations</div>
+                    <div class="service-action-hint">Explore ↗</div>
                 </div>
             </div>
         </section>
 
-        <div class="guarantees reveal-up">
-            <div class="guarantee-item">QUALITY <span>WORKMANSHIP</span></div>
-            <div class="guarantee-item">RELIABLE <span>SERVICE</span></div>
-            <div class="guarantee-item">FAST <span>TURNAROUND</span></div>
-        </div>
-
-        <div class="cta-section reveal-up">
-            <div class="book-now">BOOK NOW</div>
-            <div class="cta-tag">>> INITIATE_BOOKING_SEQUENCE</div>
-            
-            <div class="contact-info">
-                <a href="tel:+27610956964" class="contact-btn">📞 Fayyaad - 061 095 6964</a>
-                <a href="tel:+27626828245" class="contact-btn">📞 Jashmika - 062 682 8245</a>
-                <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="contact-btn wa-btn">💬 Chat on WhatsApp</a>
-                <a href="https://youtube.com/@fyr_speedz?si=4avvTB22L735EMTe" target="_blank" class="contact-btn yt-btn">📺 Visit our YouTube</a>
+        <!-- Structural Pillars -->
+        <section style="border-bottom: none;">
+            <div class="section-header">
+                <div>
+                    <div class="section-tag">02 // STANDARDS</div>
+                    <h2 class="section-heading">The Core Principles</h2>
+                </div>
             </div>
 
-            <div class="location">
-                <span>[LOC]</span> Based in Cape Town<br>
-                <span>[SVC]</span> Mobile Service Available
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-title">Quality Workmanship</div>
+                    <p class="pillar-desc">Rigorous diagnostic paths and precise technical execution ensuring structural and electronic reliability.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-title">Reliable Service</div>
+                    <p class="pillar-desc">Honest diagnostics, direct communication, and transparent solutions designed to protect your vehicle integrity.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-title">Fast Turnaround</div>
+                    <p class="pillar-desc">Optimized workflow mechanics geared toward minimizing vehicle downtime without sacrificing analytical depth.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cinematic Contact Block -->
+        <div class="contact-section">
+            <h2 class="contact-title">Ready to service<br>your vehicle?</h2>
+            
+            <div class="contact-grid">
+                <a href="tel:+27610956964" class="action-link">📞 Fayyaad: 061 095 6964</a>
+                <a href="tel:+27626828245" class="action-link">📞 Jashmika: 062 682 8245</a>
+                <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="action-link wa">💬 WhatsApp Booking</a>
+                <a href="https://youtube.com/@fyr_speedz?si=4avvTB22L735EMTe" target="_blank" class="action-link">📺 YouTube Channel</a>
+            </div>
+
+            <div class="studio-meta">
+                LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABILITY ACTIVE
             </div>
         </div>
 
     </div>
 
-    <!-- Floating Action Button (FAB) -->
-    <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="fab-wa" aria-label="Chat with us on WhatsApp">
+    <!-- Floating Action Button -->
+    <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="fab-wa" aria-label="Chat on WhatsApp">
         💬
     </a>
 
-    <!-- THE MODAL OVERLAY -->
+    <!-- CINEMATIC MODAL -->
     <div class="modal-overlay" id="serviceModal" onclick="closeModal(event)">
         <div class="modal-box" role="dialog" aria-labelledby="modal-title" aria-modal="true">
-            <button class="close-btn" onclick="forceCloseModal()" aria-label="Close Modal">X</button>
+            <button class="close-btn" onclick="forceCloseModal()" aria-label="Close Modal">[ CLOSE ]</button>
             <div id="modal-title">Service Title</div>
             <div id="modal-desc">Service Description goes here...</div>
-            <a href="#" id="modal-wa-btn" target="_blank" class="contact-btn wa-btn">💬 Book this Service</a>
-            
-            <!-- Animated Watermark Logo -->
+            <a href="#" id="modal-wa-btn" target="_blank" class="modal-cta">💬 Book via WhatsApp</a>
             <div class="modal-logo"><span>FYR_</span>SPEEDZ</div>
         </div>
     </div>
 
-    <!-- Script Logic -->
+    <!-- SCRIPT ENGINE -->
     <script>
         const serviceData = {
-            'auto': { title: 'Auto Electrical', desc: 'Got a gremlin in the system? We specialize in tracing and repairing complex wiring issues, sensor failures, and electrical drains to keep your vehicle running perfectly.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Auto Electrical Fault Finding' },
-            'starter': { title: 'Starter Rebuild', desc: 'Don’t let a dead starter leave you stranded. We offer complete starter motor diagnostics, repair, and rebuilding to restore your ignition system to factory reliability.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Starter Rebuilding' },
-            'alternator': { title: 'Alternator Rebuild', desc: 'Is your battery not holding a charge? We professionally test, repair, and rebuild alternators to ensure your electrical systems are getting the power they need.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Alternator Rebuilding' },
-            'minor': { title: 'Minor Services', desc: 'Keep your daily driver or weekend project in peak condition. We handle routine maintenance, oil changes, filter replacements, and general mechanical health checks.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Minor Vehicle Services' },
-            'diag': { title: 'Diagnostics', desc: 'Dashboard lit up like a Christmas tree? We use advanced OBD2 scanning to pinpoint engine codes, clear lights, and give you an accurate breakdown of the issue.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Vehicle Diagnostics' },
-            'led': { title: 'LED Upgrades', desc: 'Upgrade your nighttime visibility and give your ride a sharper, modern look. We handle high-performance LED headlight conversions, interior lighting, and custom installs.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about LED / Light Upgrades' },
-            'dashcam': { title: 'Dash Cams', desc: 'Protect yourself on the road with reliable, continuous recording. We provide seamless, professional hardwired dash cam setups with all the messy cables hidden away.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Dash Cam Installations' },
-            'cctv': { title: 'CCTV Installs', desc: 'Security isn\'t just for your car. We also provide professional CCTV camera installations for your home, garage, or workshop to keep your property totally secure.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about CCTV Installations' }
+            'auto': { title: 'Auto Electrical Fault Finding', desc: 'Complex wiring gremlins, sensor diagnostics, and system drains isolated and repaired with precision equipment.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Auto Electrical Fault Finding' },
+            'starter': { title: 'Starter Rebuilding', desc: 'Complete motor diagnostics, overhaul, and component rebuilding to restore factory ignition reliability.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Starter Rebuilding' },
+            'alternator': { title: 'Alternator Rebuilding', desc: 'Professional output testing, diode checks, and internal rebuilding to guarantee steady power delivery.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Alternator Rebuilding' },
+            'minor': { title: 'Minor Vehicle Services', desc: 'Routine preventative maintenance, fluid exchanges, filter swaps, and total mechanical health reviews.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Minor Vehicle Services' },
+            'diag': { title: 'Vehicle Diagnostics', desc: 'Advanced electronic scanning to read error matrices, clear warning flags, and locate root mechanical issues.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Vehicle Diagnostics' },
+            'led': { title: 'LED & Light Upgrades', desc: 'High-performance illumination enhancements, custom beam tuning, and clean cosmetic lighting upgrades.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about LED / Light Upgrades' },
+            'dashcam': { title: 'Dash Cam Installations', desc: 'Clean, hardwired multi-channel security setups with concealed cable routing for total peace of mind.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Dash Cam Installations' },
+            'cctv': { title: 'CCTV Installations', desc: 'Commercial-grade residential and workshop camera frameworks engineered for absolute property monitoring.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about CCTV Installations' }
         };
 
         const modal = document.getElementById('serviceModal');
@@ -668,43 +680,54 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Custom Cursor Momentum Engine
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorFollower = document.getElementById('cursor-follower');
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+
+        function animateCursor() {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Enlarge follower on interactive element hover
+        document.querySelectorAll('a, .service-row, .close-btn, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorFollower.style.width = '60px';
+                cursorFollower.style.height = '60px';
+                cursorFollower.style.borderColor = 'var(--accent-red)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorFollower.style.width = '40px';
+                cursorFollower.style.height = '40px';
+                cursorFollower.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            });
+        });
+
+        // Scroll Progress & Header Glass Effect
+        window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             const progressBar = document.getElementById('scroll-progress');
             
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                
-                const totalScroll = document.documentElement.scrollTop;
-                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scroll = `${totalScroll / windowHeight * 100}%`;
-                progressBar.style.width = scroll;
-            });
-
-            const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
-            const revealOnScroll = new IntersectionObserver((entries, observer) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.15,
-                rootMargin: "0px 0px -20px 0px"
-            });
-
-            const leftCards = document.querySelectorAll('.reveal-left');
-            const rightCards = document.querySelectorAll('.reveal-right');
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
             
-            leftCards.forEach((item, index) => item.style.transitionDelay = `${index * 0.1}s`);
-            rightCards.forEach((item, index) => item.style.transitionDelay = `${(index * 0.1) + 0.1}s`);
-
-            revealElements.forEach((reveal) => revealOnScroll.observe(reveal));
+            const totalScroll = document.documentElement.scrollTop;
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = `${(totalScroll / windowHeight) * 100}%`;
         });
     </script>
 </body>
