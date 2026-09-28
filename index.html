@@ -92,7 +92,7 @@
         }
 
         /* ==========================================
-           MOBILE LAYOUT (Compact & Amplified Touch)
+           MOBILE LAYOUT
            ========================================== */
         header {
             position: fixed;
@@ -138,6 +138,8 @@
             color: var(--text-muted);
             text-transform: uppercase;
         }
+
+        .desktop-only { display: none; }
 
         .audio-toggle {
             font-family: 'JetBrains Mono', monospace;
@@ -458,7 +460,7 @@
 
 
         /* ==========================================
-           DESKTOP LAYOUT (Clean & Compact Dashboard)
+           DESKTOP LAYOUT
            ========================================== */
         @media(min-width: 768px) {
             header {
@@ -474,6 +476,7 @@
             }
             .logo { font-size: 1.35rem; }
             .header-meta { font-size: 0.7rem; letter-spacing: 0.1em; }
+            .desktop-only { display: block; }
             .audio-toggle { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
             .container { padding: 0 3.5rem; }
 
@@ -646,7 +649,7 @@
                 <p class="hero-desc">
                     Engineered for high-performance standards, complex troubleshooting, and flawless execution. Based in Cape Town with fully mobile services available.
                 </p>
-                <div class="header-meta" style="color: var(--text-main); display: none; @media(min-width: 768px){display:block;}">[ SCROLL TO EXPLORE ]</div>
+                <div class="header-meta desktop-only">[ SCROLL TO EXPLORE ]</div>
             </div>
         </div>
 
@@ -663,55 +666,55 @@
                 <div class="service-row" tabindex="0" onclick="openModal('auto')" onkeydown="handleKey(event, 'auto')">
                     <span class="service-index">01</span>
                     <div class="service-main-title">Auto Electrical Fault Finding</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('starter')" onkeydown="handleKey(event, 'starter')">
                     <span class="service-index">02</span>
                     <div class="service-main-title">Starter Rebuilding</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('alternator')" onkeydown="handleKey(event, 'alternator')">
                     <span class="service-index">03</span>
                     <div class="service-main-title">Alternator Rebuilding</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('minor')" onkeydown="handleKey(event, 'minor')">
                     <span class="service-index">04</span>
                     <div class="service-main-title">Minor Vehicle Services</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('diag')" onkeydown="handleKey(event, 'diag')">
                     <span class="service-index">05</span>
                     <div class="service-main-title">Vehicle Diagnostics & Code Clearing</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('battery')" onkeydown="handleKey(event, 'battery')">
                     <span class="service-index">06</span>
                     <div class="service-main-title">Battery Testing</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('led')" onkeydown="handleKey(event, 'led')">
                     <span class="service-index">07</span>
                     <div class="service-main-title">LED / Light Upgrades</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('dashcam')" onkeydown="handleKey(event, 'dashcam')">
                     <span class="service-index">08</span>
                     <div class="service-main-title">Dash Cam Installations</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
 
                 <div class="service-row" tabindex="0" onclick="openModal('cctv')" onkeydown="handleKey(event, 'cctv')">
                     <span class="service-index">09</span>
                     <div class="service-main-title">CCTV Installations</div>
-                    <div class="service-action-hint">Explore ↗</div>
+                    <div class="service-action-hint">Explore</div>
                 </div>
             </div>
         </section>
