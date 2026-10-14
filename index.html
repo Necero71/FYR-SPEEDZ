@@ -1,965 +1,832 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FYR_SPEEDZ | Auto Electrical & Diagnostics</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #030303;
-            --surface-color: #0c0c0c;
-            --surface-hover: #141414;
-            --text-main: #f3f3f3;
-            --text-muted: #888888;
-            --accent-red: #ff2222;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 34, 34, 0.4);
-            --wa-green: #25D366;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FYR_SPEEDZ | Auto Electrical &amp; Diagnostics, Cape Town</title>
+<meta name="description" content="Auto electrical fault finding, starter and alternator rebuilds, diagnostics, battery testing, LED upgrades, dash cams and CCTV in Cape Town. Mobile service available.">
+<meta name="theme-color" content="#030303">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FYR_SPEEDZ | Auto Electrical &amp; Diagnostics">
+<meta property="og:description" content="Precision auto electrical and diagnostics in Cape Town. Mobile service available. Book on WhatsApp.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030303'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='20' text-anchor='middle' fill='%23ff2222'%3EF%3C/text%3E%3C/svg%3E">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            cursor: auto;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-        html {
-            scroll-behavior: smooth;
-        }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "FYR_SPEEDZ",
+  "description": "Auto electrical fault finding, starter and alternator rebuilds, diagnostics, battery testing, LED upgrades, dash cam and CCTV installations.",
+  "telephone": "+27610956964",
+  "address": { "@type": "PostalAddress", "addressLocality": "Cape Town", "addressCountry": "ZA" },
+  "areaServed": { "@type": "City", "name": "Cape Town" },
+  "sameAs": [
+    "https://www.tiktok.com/@fyrspeedz_jfr",
+    "https://youtube.com/@fyr_speedz"
+  ]
+}
+</script>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.4;
-            overflow-x: hidden;
-            font-weight: 300;
-        }
+<!-- Only enable reveal animations when they can actually run -->
+<script>
+if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('reveal-on');
+}
+</script>
 
-        /* Liquid Smoke Canvas Background */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            filter: blur(40px);
-            opacity: 0.65;
-        }
+<style>
+:root {
+  --bg-color: #030303;
+  --surface-color: #0c0c0c;
+  --surface-hover: #141414;
+  --text-main: #f3f3f3;
+  --text-muted: #9a9a9a;
+  --accent-red: #ff2222;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 34, 34, 0.4);
+  --wa-green: #25D366;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-        /* QoL Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            z-index: 3000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .toast.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
+html { scroll-behavior: smooth; }
+html.lock { overflow: hidden; }
 
-        /* SCROLL PROGRESS */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            background-color: var(--accent-red);
-            width: 0%;
-            z-index: 1000;
-            transition: width 0.1s linear;
-        }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.45;
+  overflow-x: hidden;
+  font-weight: 300;
+  -webkit-text-size-adjust: 100%;
+}
 
-        /* ==========================================
-           MOBILE LAYOUT
-           ========================================== */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.85rem 1rem;
-            z-index: 100;
-            background: rgba(3, 3, 3, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border-subtle);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
-        }
+:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 3px;
+}
 
-        header.scrolled-header {
-            background-color: rgba(3, 3, 3, 0.95);
-            border-bottom: 1px solid var(--border-hover);
-        }
+/* Liquid smoke background: rendered at low res and upscaled, so no CSS blur needed */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.7;
+}
 
-        .logo {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1rem;
-            letter-spacing: -0.03em;
-            text-transform: uppercase;
-        }
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: var(--accent-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 1000;
+}
 
-        .logo span { color: var(--accent-red); }
+/* ==========================================
+   MOBILE LAYOUT
+========================================== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  padding-top: calc(0.85rem + env(safe-area-inset-top));
+  z-index: 100;
+  background: rgba(3, 3, 3, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+header.scrolled-header {
+  background-color: rgba(3, 3, 3, 0.95);
+  border-bottom-color: var(--border-hover);
+}
 
-        .header-meta {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.logo span { color: var(--accent-red); }
 
-        .desktop-only { display: none; }
+.header-controls { display: flex; align-items: center; gap: 0.75rem; }
 
-        .audio-toggle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem;
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            padding: 0.3rem 0.5rem;
-            border-radius: 3px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.2s ease;
-        }
+.header-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
 
-        .audio-toggle:hover, .audio-toggle.active {
-            border-color: var(--accent-red);
-            color: var(--text-main);
-        }
-        
-        .audio-toggle.active {
-            background-color: rgba(255, 34, 34, 0.1);
-        }
+.desktop-only { display: none; }
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+.audio-toggle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 0.35rem 0.55rem;
+  border-radius: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.audio-toggle:hover, .audio-toggle.active { border-color: var(--accent-red); color: var(--text-main); }
+.audio-toggle.active { background-color: rgba(255, 34, 34, 0.1); }
+.audio-toggle:disabled { opacity: 0.5; cursor: default; }
 
-        .hero {
-            padding-top: 5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
+.container { max-width: 1300px; margin: 0 auto; padding: 0 1rem; }
 
-        .hero-title {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1.6rem;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
+.hero {
+  padding-top: 5.5rem;
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
 
-        .hero-title span {
-            color: var(--text-muted);
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
-            font-weight: 400;
-        }
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+.hero-title span {
+  color: var(--text-muted);
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
 
-        .hero-desc {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.5;
-        }
+.hero-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; margin-bottom: 1.25rem; }
 
-        section {
-            padding: 2.5rem 0;
-            border-bottom: 1px solid var(--border-subtle);
-        }
+.hero-cta { display: flex; flex-direction: column; gap: 0.5rem; }
 
-        .section-header {
-            margin-bottom: 1.2rem;
-        }
+/* Shared button style */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.btn:active { border-color: var(--accent-red); }
+.btn.wa {
+  border-color: rgba(37, 211, 102, 0.4);
+  color: var(--wa-green);
+  background-color: rgba(37, 211, 102, 0.06);
+}
+.btn.solid-wa {
+  background-color: var(--wa-green);
+  border-color: var(--wa-green);
+  color: #000;
+  font-weight: 700;
+}
 
-        .section-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--accent-red);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 0.25rem;
-            display: block;
-            font-weight: 500;
-        }
+.ico { width: 1.1em; height: 1.1em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .section-heading {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-        }
+section { padding: 2.5rem 0; border-bottom: 1px solid var(--border-subtle); }
+section.last { border-bottom: none; }
 
-        .services-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
+.section-header { margin-bottom: 1.2rem; }
 
-        .service-row {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-subtle);
-            padding: 0.9rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent-red);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  display: block;
+  font-weight: 500;
+}
 
-        .service-row:active {
-            transform: scale(0.98);
-            border-color: var(--accent-red);
-        }
+.section-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
 
-        .service-main-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+.services-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
 
-        .service-action-hint {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
+.service-row {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-subtle);
+  padding: 0.95rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.service-row:active { transform: scale(0.98); border-color: var(--accent-red); }
 
-        .service-index { display: none; }
+.service-main-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
 
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.6rem;
-        }
+.service-action-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 
-        .pillar-card {
-            padding: 1rem;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-subtle);
-            border-left: 2px solid var(--accent-red);
-            border-radius: 4px;
-        }
+.service-index { display: none; }
 
-        .pillar-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.25rem;
-        }
+.pillars-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
 
-        .pillar-desc {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
+.pillar-card {
+  padding: 1rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent-red);
+  border-radius: 4px;
+}
+.pillar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.pillar-desc { color: var(--text-muted); font-size: 0.82rem; }
 
-        .contact-section {
-            padding: 3rem 0;
-            text-align: center;
-        }
+.contact-section { padding: 3rem 0 2rem; text-align: center; }
 
-        .contact-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.25rem;
-        }
+.contact-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
 
-        .contact-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
+.contact-grid { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
 
-        .action-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 4px;
-        }
+.studio-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
 
-        .action-link.wa {
-            border-color: rgba(37, 211, 102, 0.4);
-            color: var(--wa-green);
-            background-color: rgba(37, 211, 102, 0.04);
-        }
+footer.site-footer {
+  padding: 0 0 5rem;
+  text-align: center;
+}
 
-        .studio-meta {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.5rem;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            line-height: 1.5;
-        }
+/* Modal (native <dialog>: focus trap, Esc and backdrop handled by the browser) */
+dialog.modal {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  margin: auto 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+}
+dialog.modal::backdrop {
+  background-color: rgba(3, 3, 3, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+dialog.modal[open]::backdrop { animation: fade-in 0.3s ease both; }
+dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
 
-        /* Mobile Bottom-Sheet Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(3, 3, 3, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-        .modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-box {
+  position: relative;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--accent-red);
+  padding: 1.75rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
 
-        .modal-box {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-subtle);
-            border-top: 3px solid var(--accent-red);
-            width: 100%;
-            max-width: 600px;
-            padding: 1.75rem 1rem 1.25rem 1rem;
-            position: relative;
-            border-top-left-radius: 14px;
-            border-top-right-radius: 14px;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+.close-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  text-transform: uppercase;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.close-btn:hover { color: var(--text-main); }
 
-        .modal-overlay.active .modal-box { transform: translateY(0); }
+#modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  padding-right: 4.5rem;
+}
 
-        .close-btn {
-            position: absolute;
-            top: 0.85rem;
-            right: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            background: none;
-            border: none;
-            text-transform: uppercase;
-            padding: 0.4rem;
-            cursor: pointer;
-        }
+#modal-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; margin-bottom: 1.25rem; }
 
-        #modal-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            padding-right: 2rem;
-        }
+.modal-actions { display: flex; flex-direction: column; gap: 0.5rem; }
 
-        #modal-desc {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.5;
-            margin-bottom: 1.25rem;
-        }
+.fab-wa {
+  position: fixed;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  right: calc(14px + env(safe-area-inset-right));
+  background-color: var(--wa-green);
+  color: #000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: transform 0.25s var(--ease);
+}
+.fab-wa:active { transform: scale(0.94); }
+.fab-wa .ico { width: 22px; height: 22px; }
 
-        .modal-cta {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 0.85rem;
-            background-color: var(--wa-green);
-            color: #000;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 4px;
-        }
+/* Scroll reveal (only active when JS + motion are available) */
+.reveal-on .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal-on .reveal.in { opacity: 1; transform: none; }
 
-        .modal-logo {
-            position: absolute;
-            bottom: 0.4rem;
-            right: 1rem;
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            opacity: 0.25;
-        }
-        .modal-logo span { color: var(--accent-red); }
+/* ==========================================
+   DESKTOP LAYOUT
+========================================== */
+@media (min-width: 768px) {
+  header {
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(3,3,3,0.9), transparent);
+    border-bottom: none;
+  }
+  header.scrolled-header {
+    padding: 1rem 3rem;
+    background-color: rgba(3, 3, 3, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
 
-        .fab-wa {
-            position: fixed;
-            bottom: 14px;
-            right: 14px;
-            background-color: var(--wa-green);
-            color: #000;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.1rem;
-            z-index: 99;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
+  .logo { font-size: 1.35rem; }
+  .header-meta { font-size: 0.7rem; letter-spacing: 0.1em; }
+  .desktop-only { display: block; }
+  .audio-toggle { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
 
+  .container { padding: 0 3.5rem; }
 
-        /* ==========================================
-           DESKTOP LAYOUT
-           ========================================== */
-        @media(min-width: 768px) {
-            header {
-                padding: 1.5rem 3rem;
-                background: linear-gradient(to bottom, rgba(3,3,3,0.9), transparent);
-                border-bottom: none;
-            }
-            header.scrolled-header {
-                padding: 1rem 3rem;
-                background-color: rgba(3, 3, 3, 0.85);
-                backdrop-filter: blur(20px);
-                border-bottom: 1px solid var(--border-subtle);
-            }
-            .logo { font-size: 1.35rem; }
-            .header-meta { font-size: 0.7rem; letter-spacing: 0.1em; }
-            .desktop-only { display: block; }
-            .audio-toggle { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
-            .container { padding: 0 3.5rem; }
+  .hero {
+    min-height: 80vh;
+    padding-top: 10rem;
+    padding-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hero-title { font-size: clamp(2.5rem, 5.5vw, 5.5rem); max-width: 950px; margin-bottom: 2rem; }
+  .hero-title span { font-size: clamp(1rem, 2vw, 1.75rem); margin-top: 0.75rem; }
 
-            .hero {
-                min-height: 75vh;
-                padding-top: 10rem;
-                padding-bottom: 4rem;
-                border-bottom: 1px solid var(--border-subtle);
-            }
-            .hero-title {
-                font-size: clamp(2.5rem, 5.5vw, 5.5rem);
-                max-width: 950px;
-                margin-bottom: 2rem;
-            }
-            .hero-title span {
-                font-size: clamp(1rem, 2vw, 1.75rem);
-                margin-top: 0.75rem;
-            }
-            .hero-bottom {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-end;
-            }
-            .hero-desc {
-                max-width: 400px;
-                font-size: 0.95rem;
-            }
+  .hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
+  .hero-desc { max-width: 440px; font-size: 1rem; }
+  .hero-cta { flex-direction: row; }
+  .hero-cta .btn { padding: 1rem 1.75rem; font-size: 0.75rem; }
 
-            section {
-                padding: 6rem 0;
-                border-bottom: 1px solid var(--border-subtle);
-            }
-            .section-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                margin-bottom: 3rem;
-            }
-            .section-tag { font-size: 0.7rem; margin-bottom: 0; }
-            .section-heading { font-size: clamp(1.75rem, 3.5vw, 3rem); }
+  section { padding: 6rem 0; }
 
-            .services-list { display: flex; flex-direction: column; gap: 0; }
-            .service-row {
-                background-color: transparent;
-                border: none;
-                border-bottom: 1px solid var(--border-subtle);
-                border-radius: 0;
-                display: grid;
-                grid-template-columns: 70px 1fr auto;
-                align-items: center;
-                padding: 2rem 0;
-                transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
-            }
-            .service-row:first-child { border-top: 1px solid var(--border-subtle); }
-            .service-row:hover {
-                padding-left: 1.25rem;
-                background-color: var(--surface-color);
-                border-color: var(--border-subtle);
-                transform: none;
-            }
-            .service-index {
-                display: block;
-                font-family: 'JetBrains Mono', monospace;
-                color: var(--text-muted);
-                font-size: 0.75rem;
-            }
-            .service-main-title {
-                font-size: clamp(1.25rem, 2.2vw, 2.2rem);
-                transition: color 0.3s ease;
-            }
-            .service-row:hover .service-main-title { color: var(--accent-red); }
-            .service-action-hint {
-                display: flex;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 0.7rem;
-                color: var(--text-muted);
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                gap: 0.5rem;
-                transition: color 0.3s ease;
-            }
-            .service-row:hover .service-action-hint { color: var(--text-main); }
+  .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; }
+  .section-tag { font-size: 0.7rem; margin-bottom: 0; }
+  .section-heading { font-size: clamp(1.75rem, 3.5vw, 3rem); }
 
-            .pillars-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 2.5rem;
-                margin-top: 3rem;
-            }
-            .pillar-card {
-                padding: 2rem;
-                border-radius: 0;
-                border-left: none;
-                border-top: 2px solid var(--accent-red);
-            }
-            .pillar-card:hover { transform: translateY(-3px); }
-            .pillar-title { font-size: 1.1rem; margin-bottom: 0.75rem; }
-            .pillar-desc { font-size: 0.85rem; }
+  .services-list { gap: 0; }
+  .services-list li { border-bottom: 1px solid var(--border-subtle); }
+  .services-list li:first-child { border-top: 1px solid var(--border-subtle); }
 
-            .contact-section { padding: 8rem 0; }
-            .contact-title { font-size: clamp(2.2rem, 5vw, 5rem); margin-bottom: 2.5rem; }
-            .contact-grid {
-                flex-direction: row;
-                justify-content: center;
-                gap: 1.25rem;
-                margin-bottom: 3.5rem;
-            }
-            .action-link {
-                width: auto;
-                padding: 1rem 2rem;
-                font-size: 0.75rem;
-                letter-spacing: 0.1em;
-                border-radius: 0;
-            }
-            .action-link:hover {
-                background-color: var(--text-main);
-                color: var(--bg-color);
-                border-color: var(--text-main);
-            }
-            .studio-meta { font-size: 0.7rem; }
+  .service-row {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    padding: 2rem 0;
+    transition: padding-left 0.4s var(--ease), background-color 0.3s ease;
+  }
+  .service-row:hover { padding-left: 1.25rem; background-color: var(--surface-color); }
+  .service-row:active { transform: none; }
 
-            .modal-overlay { align-items: center; }
-            .modal-box {
-                max-width: 600px;
-                padding: 3.5rem 3rem;
-                border-radius: 0;
-                border-top: 1px solid var(--border-subtle);
-                border-left: 3px solid var(--accent-red);
-            }
-            .close-btn { top: 1.5rem; right: 1.5rem; font-size: 0.75rem; }
-            #modal-title { font-size: clamp(1.75rem, 2.5vw, 2.2rem); margin-bottom: 1.25rem; }
-            #modal-desc { font-size: 0.95rem; margin-bottom: 2.5rem; }
-            .modal-cta { padding: 1.1rem; font-size: 0.75rem; border-radius: 0; }
-            .modal-logo { bottom: 1.5rem; right: 3rem; font-size: 0.8rem; opacity: 0.2; }
-            .fab-wa { bottom: 25px; right: 25px; width: 50px; height: 50px; font-size: 1.35rem; }
-        }
-    </style>
+  .service-index { display: block; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.75rem; }
+  .service-main-title { font-size: clamp(1.25rem, 2.2vw, 2.2rem); transition: color 0.3s ease; }
+  .service-row:hover .service-main-title { color: var(--accent-red); }
+
+  .service-action-hint { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease; }
+  .service-row:hover .service-action-hint { color: var(--text-main); }
+
+  .pillars-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 3rem; }
+  .pillar-card { padding: 2rem; border-radius: 0; border-left: 1px solid var(--border-subtle); border-top: 2px solid var(--accent-red); transition: transform 0.3s var(--ease); }
+  .pillar-card:hover { transform: translateY(-3px); }
+  .pillar-title { font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .pillar-desc { font-size: 0.9rem; }
+
+  .contact-section { padding: 8rem 0 3rem; }
+  .contact-title { font-size: clamp(2.2rem, 5vw, 5rem); margin-bottom: 2.5rem; }
+  .contact-grid { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 1.25rem; margin-bottom: 3.5rem; }
+  .btn { padding: 1rem 2rem; font-size: 0.75rem; letter-spacing: 0.1em; border-radius: 0; }
+  .btn:hover { background-color: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
+  .btn.solid-wa:hover { background-color: #fff; border-color: #fff; color: #000; }
+
+  .studio-meta { font-size: 0.7rem; }
+  footer.site-footer { padding-bottom: 4rem; }
+
+  dialog.modal { max-width: 600px; margin: auto; }
+  dialog.modal[open] .modal-box { animation: pop-in 0.4s var(--ease) both; }
+  .modal-box {
+    padding: 3.5rem 3rem;
+    border-radius: 0;
+    border-top: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent-red);
+  }
+  .close-btn { top: 1.5rem; right: 1.5rem; font-size: 0.75rem; }
+  #modal-title { font-size: clamp(1.75rem, 2.5vw, 2.2rem); margin-bottom: 1.25rem; padding-right: 5rem; }
+  #modal-desc { font-size: 1rem; margin-bottom: 2.5rem; }
+  .modal-actions { flex-direction: row; }
+  .modal-actions .btn { flex: 1; }
+
+  .fab-wa { bottom: 25px; right: 25px; width: 54px; height: 54px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Liquid Smoke Canvas Background -->
-    <canvas id="bg-canvas"></canvas>
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5.2A8.5 8.5 0 1 1 21 11.5z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+</svg>
 
-    <!-- Updated Oskar med k Audio Element -->
-    <audio id="ambient-audio" loop preload="none">
-        <source src="oskar med k - On The Ground (Official Music Video) [FdRhGqyY2V0].mp3" type="audio/mpeg">
-    </audio>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-    <div class="toast" id="qol-toast">Copied to clipboard!</div>
+<!-- Swap this for a licensed / royalty-free track when you can -->
+<audio id="ambient-audio" src="oskar%20med%20k%20-%20On%20The%20Ground%20(Official%20Music%20Video)%20%5BFdRhGqyY2V0%5D.mp3" loop preload="none"></audio>
 
-    <div class="scroll-progress" id="scroll-progress"></div>
-    
-    <header id="main-header">
-        <div class="logo"><span>FYR_</span>SPEEDZ</div>
-        <div class="header-controls">
-            <button class="audio-toggle" id="audio-btn" onclick="toggleAudio()">[ AUDIO: OFF ]</button>
-            <div class="header-meta">CPT</div>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<header id="main-header">
+  <div class="logo"><span>FYR_</span>SPEEDZ</div>
+  <div class="header-controls">
+    <button class="audio-toggle" id="audio-btn" type="button" aria-pressed="false">[ AUDIO: OFF ]</button>
+    <div class="header-meta">CPT</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1 class="hero-title">
+      Precision Auto Electrical &amp; Diagnostics.
+      <span>Book to avoid disappointment.</span>
+    </h1>
+    <div class="hero-bottom">
+      <div>
+        <p class="hero-desc">
+          Engineered for high-performance standards, complex troubleshooting, and flawless execution. Based in Cape Town with fully mobile services available.
+        </p>
+        <div class="hero-cta">
+          <a class="btn solid-wa" href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" rel="noopener noreferrer">
+            <svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg> WhatsApp Booking
+          </a>
+          <a class="btn" href="tel:+27610956964">
+            <svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> Call Fayyaad
+          </a>
         </div>
-    </header>
+      </div>
+      <div class="header-meta desktop-only" aria-hidden="true">[ SCROLL TO EXPLORE ]</div>
+    </div>
+  </div>
 
-    <div class="container">
-
-        <!-- Hero Block -->
-        <div class="hero">
-            <h1 class="hero-title">
-                Precision Auto Electrical & Diagnostics.
-                <span>Book to avoid disappointment.</span>
-            </h1>
-            <div class="hero-bottom">
-                <p class="hero-desc">
-                    Engineered for high-performance standards, complex troubleshooting, and flawless execution. Based in Cape Town with fully mobile services available.
-                </p>
-                <div class="header-meta desktop-only">[ SCROLL TO EXPLORE ]</div>
-            </div>
-        </div>
-
-        <!-- Service Index -->
-        <section>
-            <div class="section-header">
-                <div>
-                    <span class="section-tag">01 // CAPABILITIES</span>
-                    <h2 class="section-heading">Specialized Services</h2>
-                </div>
-            </div>
-
-            <div class="services-list">
-                <div class="service-row" tabindex="0" onclick="openModal('auto')" onkeydown="handleKey(event, 'auto')">
-                    <span class="service-index">01</span>
-                    <div class="service-main-title">Auto Electrical Fault Finding</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('starter')" onkeydown="handleKey(event, 'starter')">
-                    <span class="service-index">02</span>
-                    <div class="service-main-title">Starter Rebuilding</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('alternator')" onkeydown="handleKey(event, 'alternator')">
-                    <span class="service-index">03</span>
-                    <div class="service-main-title">Alternator Rebuilding</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('minor')" onkeydown="handleKey(event, 'minor')">
-                    <span class="service-index">04</span>
-                    <div class="service-main-title">Minor Vehicle Services</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('diag')" onkeydown="handleKey(event, 'diag')">
-                    <span class="service-index">05</span>
-                    <div class="service-main-title">Vehicle Diagnostics & Code Clearing</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('battery')" onkeydown="handleKey(event, 'battery')">
-                    <span class="service-index">06</span>
-                    <div class="service-main-title">Battery Testing</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('led')" onkeydown="handleKey(event, 'led')">
-                    <span class="service-index">07</span>
-                    <div class="service-main-title">LED / Light Upgrades</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('dashcam')" onkeydown="handleKey(event, 'dashcam')">
-                    <span class="service-index">08</span>
-                    <div class="service-main-title">Dash Cam Installations</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-
-                <div class="service-row" tabindex="0" onclick="openModal('cctv')" onkeydown="handleKey(event, 'cctv')">
-                    <span class="service-index">09</span>
-                    <div class="service-main-title">CCTV Installations</div>
-                    <div class="service-action-hint">Explore</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Core Principles -->
-        <section style="border-bottom: none;">
-            <div class="section-header">
-                <div>
-                    <span class="section-tag">02 // STANDARDS</span>
-                    <h2 class="section-heading">The Core Principles</h2>
-                </div>
-            </div>
-
-            <div class="pillars-grid">
-                <div class="pillar-card">
-                    <div class="pillar-title">Quality Workmanship</div>
-                    <p class="pillar-desc">Rigorous diagnostic paths and precise technical execution ensuring structural and electronic reliability.</p>
-                </div>
-                <div class="pillar-card">
-                    <div class="pillar-title">Reliable Service</div>
-                    <p class="pillar-desc">Honest diagnostics, direct communication, and transparent solutions designed to protect your vehicle integrity.</p>
-                </div>
-                <div class="pillar-card">
-                    <div class="pillar-title">Fast Turnaround</div>
-                    <p class="pillar-desc">Optimized workflow mechanics geared toward minimizing vehicle downtime without sacrificing analytical depth.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <div class="contact-section">
-            <h2 class="contact-title">Ready to service<br>your vehicle?</h2>
-            
-            <div class="contact-grid">
-                <a href="tel:+27610956964" class="action-link" onclick="copyToClipboard(event, '0610956964')">📞 Fayyaad: 061 095 6964</a>
-                <a href="tel:+27626828245" class="action-link" onclick="copyToClipboard(event, '0626828245')">📞 Jashmika: 062 682 8245</a>
-                <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="action-link wa">💬 WhatsApp Booking</a>
-                <a href="https://www.tiktok.com/@fyrspeedz_jfr?_r=1&_t=ZS-9A6u5HvpfYT" target="_blank" class="action-link">🎵 TikTok Channel</a>
-                <a href="https://youtube.com/@fyr_speedz?si=4avvTB22L735EMTe" target="_blank" class="action-link">📺 YouTube Channel</a>
-            </div>
-
-            <div class="studio-meta" onclick="copyToClipboard(event, 'Cape Town, Mobile Service Active')">
-                LOCATED IN CAPE TOWN // MOBILE SERVICE AVAILABILITY ACTIVE [TAP TO COPY]
-            </div>
-        </div>
-
+  <!-- Services -->
+  <section id="services">
+    <div class="section-header reveal">
+      <div>
+        <span class="section-tag">01 // CAPABILITIES</span>
+        <h2 class="section-heading">Specialized Services</h2>
+      </div>
     </div>
 
-    <!-- Floating Action Button -->
-    <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" class="fab-wa" aria-label="Chat on WhatsApp">
-        💬
-    </a>
+    <ul class="services-list">
+      <li class="reveal"><button type="button" class="service-row" data-service="auto"><span class="service-index" aria-hidden="true">01</span><span class="service-main-title">Auto Electrical Fault Finding</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="starter"><span class="service-index" aria-hidden="true">02</span><span class="service-main-title">Starter Rebuilding</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="alternator"><span class="service-index" aria-hidden="true">03</span><span class="service-main-title">Alternator Rebuilding</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="minor"><span class="service-index" aria-hidden="true">04</span><span class="service-main-title">Minor Vehicle Services</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="diag"><span class="service-index" aria-hidden="true">05</span><span class="service-main-title">Vehicle Diagnostics &amp; Code Clearing</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="battery"><span class="service-index" aria-hidden="true">06</span><span class="service-main-title">Battery Testing</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="led"><span class="service-index" aria-hidden="true">07</span><span class="service-main-title">LED / Light Upgrades</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="dashcam"><span class="service-index" aria-hidden="true">08</span><span class="service-main-title">Dash Cam Installations</span><span class="service-action-hint">Explore →</span></button></li>
+      <li class="reveal"><button type="button" class="service-row" data-service="cctv"><span class="service-index" aria-hidden="true">09</span><span class="service-main-title">CCTV Installations</span><span class="service-action-hint">Explore →</span></button></li>
+    </ul>
+  </section>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="serviceModal" onclick="closeModal(event)">
-        <div class="modal-box" role="dialog" aria-labelledby="modal-title" aria-modal="true">
-            <button class="close-btn" onclick="forceCloseModal()" aria-label="Close Modal">[ CLOSE ]</button>
-            <div id="modal-title">Service Title</div>
-            <div id="modal-desc">Service Description goes here...</div>
-            <a href="#" id="modal-wa-btn" target="_blank" class="modal-cta">💬 Book via WhatsApp</a>
-            <div class="modal-logo"><span>FYR_</span>SPEEDZ</div>
-        </div>
+  <!-- Principles -->
+  <section class="last">
+    <div class="section-header reveal">
+      <div>
+        <span class="section-tag">02 // STANDARDS</span>
+        <h2 class="section-heading">The Core Principles</h2>
+      </div>
     </div>
+    <div class="pillars-grid">
+      <div class="pillar-card reveal">
+        <h3 class="pillar-title">Quality Workmanship</h3>
+        <p class="pillar-desc">Rigorous diagnostic paths and precise technical execution ensuring structural and electronic reliability.</p>
+      </div>
+      <div class="pillar-card reveal">
+        <h3 class="pillar-title">Reliable Service</h3>
+        <p class="pillar-desc">Honest diagnostics, direct communication, and transparent solutions designed to protect your vehicle integrity.</p>
+      </div>
+      <div class="pillar-card reveal">
+        <h3 class="pillar-title">Fast Turnaround</h3>
+        <p class="pillar-desc">Optimized workflow mechanics geared toward minimizing vehicle downtime without sacrificing analytical depth.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Script Logic -->
-    <script>
-        const serviceData = {
-            'auto': { title: 'Auto Electrical Fault Finding', desc: 'Complex wiring gremlins, sensor diagnostics, and system drains isolated and repaired with precision equipment.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Auto Electrical Fault Finding' },
-            'starter': { title: 'Starter Rebuilding', desc: 'Complete motor diagnostics, overhaul, and component rebuilding to restore factory ignition reliability.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Starter Rebuilding' },
-            'alternator': { title: 'Alternator Rebuilding', desc: 'Professional output testing, diode checks, and internal rebuilding to guarantee steady power delivery.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Alternator Rebuilding' },
-            'minor': { title: 'Minor Vehicle Services', desc: 'Routine preventative maintenance, fluid exchanges, filter swaps, and total mechanical health reviews.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Minor Vehicle Services' },
-            'diag': { title: 'Vehicle Diagnostics', desc: 'Advanced electronic scanning to read error matrices, clear warning flags, and locate root mechanical issues.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Vehicle Diagnostics' },
-            'battery': { title: 'Battery Testing', desc: 'Accurate state-of-health and load testing to check cell capacity and prevent unexpected dead batteries.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Battery Testing' },
-            'led': { title: 'LED & Light Upgrades', desc: 'High-performance illumination enhancements, custom beam tuning, and clean cosmetic lighting upgrades.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about LED / Light Upgrades' },
-            'dashcam': { title: 'Dash Cam Installations', desc: 'Clean, hardwired multi-channel security setups with concealed cable routing for total peace of mind.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about Dash Cam Installations' },
-            'cctv': { title: 'CCTV Installations', desc: 'Commercial-grade residential and workshop camera frameworks engineered for absolute property monitoring.', waMsg: 'Hi FYR_SPEEDZ, I would like to enquire about CCTV Installations' }
-        };
+  <!-- Contact -->
+  <div class="contact-section" id="contact">
+    <h2 class="contact-title reveal">Ready to service<br>your vehicle?</h2>
+    <div class="contact-grid reveal">
+      <a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" rel="noopener noreferrer" class="btn wa">
+        <svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg> WhatsApp Booking
+      </a>
+      <a href="tel:+27610956964" class="btn">
+        <svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> Fayyaad: 061 095 6964
+      </a>
+      <a href="tel:+27626828245" class="btn">
+        <svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> Jashmika: 062 682 8245
+      </a>
+      <a href="https://www.tiktok.com/@fyrspeedz_jfr" target="_blank" rel="noopener noreferrer" class="btn">TikTok ↗</a>
+      <a href="https://youtube.com/@fyr_speedz" target="_blank" rel="noopener noreferrer" class="btn">YouTube ↗</a>
+    </div>
+  </div>
+</main>
 
-        const modal = document.getElementById('serviceModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
-        const modalWaBtn = document.getElementById('modal-wa-btn');
-        const baseWaUrl = "https://wa.me/27610956964?text=";
+<footer class="site-footer">
+  <p class="studio-meta">Based in Cape Town // Mobile service available<br>© 2026 FYR_SPEEDZ</p>
+</footer>
 
-        function openModal(serviceId) {
-            const data = serviceData[serviceId];
-            modalTitle.textContent = data.title;
-            modalDesc.textContent = data.desc;
-            modalWaBtn.href = baseWaUrl + encodeURIComponent(data.waMsg);
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        }
+<a href="https://wa.me/27610956964?text=Hi%20FYR_SPEEDZ,%20I%20would%20like%20to%20make%20a%20booking!" target="_blank" rel="noopener noreferrer" class="fab-wa" aria-label="Chat on WhatsApp">
+  <svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>
+</a>
 
-        function closeModal(event) { if(event.target === modal) forceCloseModal(); }
-        function forceCloseModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; }
+<!-- Service modal -->
+<dialog class="modal" id="service-modal" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <button class="close-btn" id="modal-close" type="button" aria-label="Close">[ CLOSE ]</button>
+    <h2 id="modal-title">Service</h2>
+    <p id="modal-desc"></p>
+    <div class="modal-actions">
+      <a href="#" id="modal-wa-btn" target="_blank" rel="noopener noreferrer" class="btn solid-wa">
+        <svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg> Book via WhatsApp
+      </a>
+      <a href="tel:+27610956964" class="btn">
+        <svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> Call
+      </a>
+    </div>
+  </div>
+</dialog>
 
-        function handleKey(event, serviceId) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                openModal(serviceId);
-            }
-        }
+<script>
+(() => {
+  const WA_BASE = 'https://wa.me/27610956964?text=';
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && modal.classList.contains('active')) {
-                forceCloseModal();
-            }
-        });
+  /* ---------- Services + modal ---------- */
+  const SERVICES = {
+    auto:       { title: 'Auto Electrical Fault Finding',       desc: 'Wiring gremlins, sensor faults and battery drains traced and repaired properly, with the right equipment instead of guesswork.' },
+    starter:    { title: 'Starter Rebuilding',                  desc: 'Full testing, strip-down and rebuild of your starter motor to restore reliable starting.' },
+    alternator: { title: 'Alternator Rebuilding',               desc: 'Output and diode testing plus internal rebuilds for steady charging and consistent power delivery.' },
+    minor:      { title: 'Minor Vehicle Services',              desc: 'Routine maintenance: fluids, filters and a general health check to keep your vehicle running right.' },
+    diag:       { title: 'Vehicle Diagnostics & Code Clearing', desc: 'Electronic scanning to read fault codes, locate the root cause, and clear warning lights once the issue is sorted.' },
+    battery:    { title: 'Battery Testing',                     desc: 'State-of-health and load testing to check capacity, so a weak battery is caught before it leaves you stranded.' },
+    led:        { title: 'LED / Light Upgrades',                desc: 'Brighter, cleaner lighting upgrades with proper beam setup and a tidy installation.' },
+    dashcam:    { title: 'Dash Cam Installations',              desc: 'Hardwired multi-channel dash cam setups with concealed cable routing for a clean finish.' },
+    cctv:       { title: 'CCTV Installations',                  desc: 'Home and workshop camera systems planned and installed for solid coverage of your property.' }
+  };
 
-        // Audio Toggle Logic
-        function toggleAudio() {
-            const audio = document.getElementById('ambient-audio');
-            const btn = document.getElementById('audio-btn');
-            
-            if (audio.paused) {
-                audio.play().then(() => {
-                    btn.textContent = '[ AUDIO: ON ]';
-                    btn.classList.add('active');
-                }).catch(err => {
-                    console.log("Audio play blocked by browser policy:", err);
-                });
-            } else {
-                audio.pause();
-                btn.textContent = '[ AUDIO: OFF ]';
-                btn.classList.remove('active');
-            }
-        }
+  const dlg = document.getElementById('service-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalWa = document.getElementById('modal-wa-btn');
+  const root = document.documentElement;
 
-        // Liquid Smoke / Organic Fluid Canvas Engine
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let blobs = [];
-        const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
+  document.querySelectorAll('[data-service]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const s = SERVICES[btn.dataset.service];
+      if (!s) return;
+      modalTitle.textContent = s.title;
+      modalDesc.textContent = s.desc;
+      modalWa.href = WA_BASE + encodeURIComponent('Hi FYR_SPEEDZ, I would like to enquire about ' + s.title);
+      dlg.showModal();
+      root.classList.add('lock');
+    });
+  });
 
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+  document.getElementById('modal-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); }); // backdrop click
+  dlg.addEventListener('close', () => root.classList.remove('lock'));
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+  /* ---------- Audio ---------- */
+  const audio = document.getElementById('ambient-audio');
+  const audioBtn = document.getElementById('audio-btn');
+  audio.volume = 0.6;
 
-        window.addEventListener('mousemove', (e) => {
-            pointer.targetX = e.clientX;
-            pointer.targetY = e.clientY;
-        });
+  function setAudioUI(on) {
+    audioBtn.textContent = on ? '[ AUDIO: ON ]' : '[ AUDIO: OFF ]';
+    audioBtn.classList.toggle('active', on);
+    audioBtn.setAttribute('aria-pressed', String(on));
+  }
 
-        window.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                pointer.targetX = e.touches[0].clientX;
-                pointer.targetY = e.touches[0].clientY;
-            }
-        }, { passive: true });
+  audioBtn.addEventListener('click', async () => {
+    if (audio.paused) {
+      try { await audio.play(); setAudioUI(true); }
+      catch (err) {
+        audioBtn.textContent = '[ AUDIO: N/A ]';
+        audioBtn.disabled = true;
+      }
+    } else {
+      audio.pause();
+      setAudioUI(false);
+    }
+  });
 
-        class LiquidBlob {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.2;
-                this.vy = (Math.random() - 0.5) * 1.2;
-                this.radius = Math.random() * 120 + 90;
-                this.color = Math.random() > 0.4 ? 'rgba(255, 34, 34, 0.35)' : 'rgba(80, 80, 80, 0.25)';
-            }
+  /* ---------- Header + scroll progress ---------- */
+  const header = document.getElementById('main-header');
+  const bar = document.getElementById('scroll-progress');
+  let ticking = false;
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+  function onScroll() {
+    const y = window.scrollY;
+    header.classList.toggle('scrolled-header', y > 40);
+    const max = root.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  onScroll();
 
-                if (this.x < -100 || this.x > width + 100) this.vx *= -1;
-                if (this.y < -100 || this.y > height + 100) this.vy *= -1;
+  /* ---------- Scroll reveal ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  if (root.classList.contains('reveal-on')) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  }
 
-                const dx = pointer.x - this.x;
-                const dy = pointer.y - this.y;
-                this.x += dx * 0.012;
-                this.y += dy * 0.012;
-            }
+  /* ---------- Liquid smoke background ---------- */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  const SCALE = 0.25; // render at 1/4 res; CSS upscales it into soft smoke
+  let w, h, blobs = [];
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+  class Blob {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.r = (Math.random() * 140 + 110) * SCALE * 1.6;
+      const red = Math.random() > 0.4;
+      this.rgb = red ? '255,34,34' : '110,110,110';
+      this.a = red ? 0.5 : 0.35;
+      this.pull = 0.003 + Math.random() * 0.004;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < -20 || this.x > w + 20) this.vx *= -1;
+      if (this.y < -20 || this.y > h + 20) this.vy *= -1;
+      this.x += (pointer.x - this.x) * this.pull;
+      this.y += (pointer.y - this.y) * this.pull;
+    }
+    draw() {
+      const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+      g.addColorStop(0, 'rgba(' + this.rgb + ',' + this.a + ')');
+      g.addColorStop(1, 'rgba(' + this.rgb + ',0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
-        function initBlobs() {
-            blobs = [];
-            const count = 7;
-            for (let i = 0; i < count; i++) {
-                blobs.push(new LiquidBlob());
-            }
-        }
+  function resize() {
+    w = canvas.width = Math.ceil(window.innerWidth * SCALE);
+    h = canvas.height = Math.ceil(window.innerHeight * SCALE);
+    pointer.x = pointer.tx = w / 2;
+    pointer.y = pointer.ty = h / 2;
+    blobs = Array.from({ length: 7 }, () => new Blob());
+    if (reduceMotion.matches) frame(); // static paint
+  }
 
-        initBlobs();
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+    pointer.x += (pointer.tx - pointer.x) * 0.06;
+    pointer.y += (pointer.ty - pointer.y) * 0.06;
+    for (const b of blobs) { b.update(); b.draw(); }
+  }
 
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
+  function loop() {
+    frame();
+    requestAnimationFrame(loop);
+  }
 
-            pointer.x += (pointer.targetX - pointer.x) * 0.06;
-            pointer.y += (pointer.targetY - pointer.y) * 0.06;
+  window.addEventListener('mousemove', e => { pointer.tx = e.clientX * SCALE; pointer.ty = e.clientY * SCALE; }, { passive: true });
+  window.addEventListener('touchmove', e => {
+    if (e.touches.length) { pointer.tx = e.touches[0].clientX * SCALE; pointer.ty = e.touches[0].clientY * SCALE; }
+  }, { passive: true });
 
-            for (let i = 0; i < blobs.length; i++) {
-                blobs[i].update();
-                blobs[i].draw();
-            }
+  let resizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 150); });
 
-            requestAnimationFrame(animateCanvas);
-        }
-
-        animateCanvas();
-
-        function copyToClipboard(e, text) {
-            if(text.includes('Cape Town')) {
-                e.preventDefault();
-                navigator.clipboard.writeText(text);
-                showToast("Location copied to clipboard!");
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('qol-toast');
-            toast.textContent = message;
-            toast.classList.add('active');
-            setTimeout(() => {
-                toast.classList.remove('active');
-            }, 2500);
-        }
-
-        // Scroll Progress & Header Glass Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            const progressBar = document.getElementById('scroll-progress');
-            
-            if (window.scrollY > 40) {
-                header.classList.add('scrolled-header');
-            } else {
-                header.classList.remove('scrolled-header');
-            }
-            
-            const totalScroll = document.documentElement.scrollTop;
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            progressBar.style.width = `${(totalScroll / windowHeight) * 100}%`;
-        });
-    </script>
+  resize();
+  if (!reduceMotion.matches) loop();
+})();
+</script>
 </body>
 </html>
