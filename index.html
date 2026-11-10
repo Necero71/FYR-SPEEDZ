@@ -161,30 +161,88 @@ header.scrolled-header {
 .container { max-width: 1300px; margin: 0 auto; padding: 0 1rem; }
 
 .hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   padding-top: 5.5rem;
   padding-bottom: 2.25rem;
   border-bottom: 1px solid var(--border-subtle);
 }
 
+/* Night-run hero scene: full-bleed canvas behind the hero copy */
+.hero-canvas, .hero-scrim {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.hero-canvas { z-index: -2; }
+.hero-scrim {
+  z-index: -1;
+  background:
+    linear-gradient(to top, rgba(3,3,3,0.95) 0%, rgba(3,3,3,0.7) 32%, rgba(3,3,3,0) 62%),
+    linear-gradient(to bottom, rgba(3,3,3,0.6) 0%, rgba(3,3,3,0) 18%);
+}
+
 .hero-title {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: 1.75rem;
-  line-height: 1.1;
+  font-size: clamp(1.9rem, 9.2vw, 3rem);
+  line-height: 1.02;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
-.hero-title span {
+.hero-title .hl { display: block; overflow: hidden; padding-bottom: 0.04em; }
+.hero-title .hl > span { display: inline-block; }
+.hero-title em { font-style: normal; color: var(--accent-red); }
+.hero-sub {
   color: var(--text-muted);
   display: block;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
-  margin-top: 0.4rem;
+  margin-top: 0.6rem;
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
 }
+
+/* Live diagnostics readout */
+.hud {
+  display: flex;
+  gap: 1.4rem;
+  margin-bottom: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hud > div { display: flex; flex-direction: column; gap: 0.15rem; }
+.hud b {
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+}
+.hud > div:last-child b { color: var(--accent-red); }
+.hud small {
+  font-size: 0.56rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Hero entrance (only when motion is allowed) */
+@keyframes line-up { from { transform: translateY(110%); } to { transform: translateY(0); } }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.reveal-on .hero-title .hl > span { animation: line-up 0.9s var(--ease) both; animation-delay: calc(0.12s + var(--i, 0) * 0.09s); }
+.reveal-on .hero-sub { animation: rise 0.8s var(--ease) 0.45s both; }
+.reveal-on .hud { animation: rise 0.8s var(--ease) 0.6s both; }
+.reveal-on .hero-bottom { animation: rise 0.8s var(--ease) 0.72s both; }
 
 .hero-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; margin-bottom: 1.25rem; }
 
@@ -443,15 +501,14 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
   .container { padding: 0 3.5rem; }
 
   .hero {
-    min-height: 80vh;
     padding-top: 10rem;
     padding-bottom: 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
   }
-  .hero-title { font-size: clamp(2.5rem, 5.5vw, 5.5rem); max-width: 950px; margin-bottom: 2rem; }
-  .hero-title span { font-size: clamp(1rem, 2vw, 1.75rem); margin-top: 0.75rem; }
+  .hero-title { font-size: clamp(3rem, 7vw, 7rem); max-width: 1100px; margin-bottom: 1.75rem; }
+  .hero-sub { font-size: clamp(1rem, 1.6vw, 1.5rem); margin-top: 0.9rem; }
+  .hud { gap: 3rem; margin-bottom: 2.25rem; }
+  .hud b { font-size: 1.9rem; }
+  .hud small { font-size: 0.65rem; }
 
   .hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
   .hero-desc { max-width: 440px; font-size: 1rem; }
@@ -553,10 +610,19 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
 
   <!-- Hero -->
   <div class="hero">
+    <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-scrim" aria-hidden="true"></div>
     <h1 class="hero-title">
-      Precision Auto Electrical &amp; Diagnostics.
-      <span>Book to avoid disappointment.</span>
+      <span class="hl"><span style="--i:0">Precision Auto</span></span>
+      <span class="hl"><span style="--i:1">Electrical &amp;</span></span>
+      <span class="hl"><span style="--i:2"><em>Diagnostics.</em></span></span>
+      <span class="hero-sub">Book to avoid disappointment.</span>
     </h1>
+    <div class="hud" aria-hidden="true">
+      <div><b data-to="12.6" data-dec="1">00.0</b><small>Volts // Battery</small></div>
+      <div><b data-to="14.2" data-dec="1">00.0</b><small>Volts // Charging</small></div>
+      <div><b data-from="7" data-to="0" data-pad="2">07</b><small>Fault codes</small></div>
+    </div>
     <div class="hero-bottom">
       <div>
         <p class="hero-desc">
@@ -826,6 +892,155 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
 
   resize();
   if (!reduceMotion.matches) loop();
+
+  /* ---------- HUD counters ---------- */
+  document.querySelectorAll('.hud b[data-to]').forEach(el => {
+    const from = parseFloat(el.dataset.from || 0);
+    const to = parseFloat(el.dataset.to);
+    const dec = parseInt(el.dataset.dec || 0, 10);
+    const pad = parseInt(el.dataset.pad || 0, 10);
+    const fmt = v => {
+      const s = v.toFixed(dec);
+      return pad ? s.padStart(pad, '0') : (v < 10 ? '0' + s : s);
+    };
+    if (reduceMotion.matches) { el.textContent = fmt(to); return; }
+    const dur = 1600, delay = 700;
+    let start = null;
+    const step = ts => {
+      if (start === null) start = ts;
+      const p = Math.min(Math.max((ts - start - delay) / dur, 0), 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+
+  /* ---------- Night-run hero: light streaks + voltage horizon ---------- */
+  const hc = document.getElementById('hero-canvas');
+  const heroEl = document.querySelector('.hero');
+  if (hc && hc.getContext) {
+    const hx = hc.getContext('2d');
+    let W = 0, H = 0, hy = 0, f = 0, streaks = [];
+    let t = 0, boost = 0, lastY = window.scrollY, last = 0, running = false, onScreen = true;
+
+    function spawn(p, far) {
+      const road = Math.random() < 0.8;
+      p.x = road ? (Math.random() - 0.5) * 2.6 : (Math.random() - 0.5) * 6;
+      p.y = road ? 0.22 + Math.random() * 0.2 : -0.2 - Math.random() * 0.9;
+      p.z = far ? 5 + Math.random() * 2 : 0.3 + Math.random() * 6.5;
+      p.red = road ? Math.random() < 0.72 : Math.random() < 0.35;
+      p.v = 0.7 + Math.random() * 0.9;
+    }
+
+    function sizeHero() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = hc.clientWidth; H = hc.clientHeight;
+      hc.width = Math.round(W * dpr); hc.height = Math.round(H * dpr);
+      hx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      hy = H * 0.4;
+      f = Math.max(W, H) * 0.55;
+      const n = W < 768 ? 120 : 240;
+      streaks = Array.from({ length: n }, () => { const p = {}; spawn(p, false); return p; });
+    }
+
+    function draw(dt) {
+      const speed = 1 + boost;
+      t += dt * speed;
+      hx.clearRect(0, 0, W, H);
+      const cx = W / 2;
+
+      // Road edges + moving centre dashes
+      hx.lineWidth = 1;
+      hx.strokeStyle = 'rgba(255,255,255,0.07)';
+      hx.beginPath();
+      // edge at world x = ±1.3 on the road plane (y = 0.42), projected to the bottom of the screen
+      [-1.3, 1.3].forEach(rx => {
+        hx.moveTo(cx, hy);
+        hx.lineTo(cx + rx * (H - hy) / 0.42, H);
+      });
+      hx.stroke();
+      hx.strokeStyle = 'rgba(255,255,255,0.12)';
+      for (let i = 0; i < 14; i++) {
+        const z1 = ((i * 0.5 - t * 1.4) % 7 + 7) % 7 + 0.3;
+        const z2 = z1 + 0.22;
+        const y1 = hy + (0.42 / z1) * f, y2 = hy + (0.42 / z2) * f;
+        if (y1 > H + 20) continue;
+        hx.lineWidth = Math.min(3, 1.2 / z1 + 0.3);
+        hx.beginPath(); hx.moveTo(cx, y1); hx.lineTo(cx, y2); hx.stroke();
+      }
+
+      // Light streaks
+      hx.globalCompositeOperation = 'lighter';
+      hx.lineCap = 'round';
+      for (const p of streaks) {
+        p.z -= p.v * speed * dt * 1.5;
+        const sx = cx + (p.x / p.z) * f, sy = hy + (p.y / p.z) * f;
+        if (p.z < 0.12 || sx < -80 || sx > W + 80 || sy > H + 80) { spawn(p, true); continue; }
+        const tz = p.z + 0.18 + 0.12 * speed * p.v;
+        const tx = cx + (p.x / tz) * f, ty = hy + (p.y / tz) * f;
+        const a = Math.min(1, (7 - p.z) / 3.5) * (p.red ? 0.85 : 0.55);
+        hx.strokeStyle = p.red ? 'rgba(255,40,40,' + a + ')' : 'rgba(255,240,225,' + a + ')';
+        hx.lineWidth = Math.min(3.2, Math.max(0.5, 1.5 / p.z));
+        hx.beginPath(); hx.moveTo(tx, ty); hx.lineTo(sx, sy); hx.stroke();
+      }
+
+      // Voltage-trace horizon (alternator ripple)
+      const amp = H * 0.012;
+      const trace = (width, alpha) => {
+        hx.lineWidth = width;
+        hx.strokeStyle = 'rgba(255,34,34,' + alpha + ')';
+        hx.beginPath();
+        for (let px = 0; px <= W; px += 4) {
+          const u = px / W;
+          const env = Math.sin(Math.PI * u);
+          const y = hy + env * amp * (Math.sin(u * 38 - t * 6) + 0.35 * Math.sin(u * 91 + t * 9));
+          px ? hx.lineTo(px, y) : hx.moveTo(px, y);
+        }
+        hx.stroke();
+      };
+      trace(6, 0.08);
+      trace(1.3, 0.75);
+      hx.globalCompositeOperation = 'source-over';
+
+      boost *= Math.pow(0.04, dt);
+    }
+
+    function heroLoop(ts) {
+      if (!running) return;
+      const dt = Math.min((ts - (last || ts)) / 1000, 0.05);
+      last = ts;
+      draw(dt);
+      requestAnimationFrame(heroLoop);
+    }
+    function start() {
+      if (running || reduceMotion.matches || !onScreen || document.hidden) return;
+      running = true; last = 0; requestAnimationFrame(heroLoop);
+    }
+    function stop() { running = false; }
+
+    new IntersectionObserver(([en]) => {
+      onScreen = en.isIntersecting;
+      onScreen ? start() : stop();
+    }).observe(heroEl);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      boost = Math.min(boost + Math.abs(y - lastY) * 0.02, 6);
+      lastY = y;
+      hc.style.opacity = String(1 - Math.min(y / (H || 1), 1) * 0.85);
+    }, { passive: true });
+
+    let hTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(hTimer);
+      hTimer = setTimeout(() => { sizeHero(); if (reduceMotion.matches) draw(0); }, 150);
+    });
+
+    sizeHero();
+    if (reduceMotion.matches) { t = 0.8; draw(0); } else start();
+  }
 })();
 </script>
 </body>
