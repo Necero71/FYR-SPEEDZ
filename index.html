@@ -593,8 +593,8 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
 
 <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-<!-- Swap this for a licensed / royalty-free track when you can -->
-<audio id="ambient-audio" src="oskar%20med%20k%20-%20On%20The%20Ground%20(Official%20Music%20Video)%20%5BFdRhGqyY2V0%5D.mp3" loop preload="none"></audio>
+<!-- "Night Run": original track synthesized from scratch (tools/night_run.py), copyright-free -->
+<audio id="ambient-audio" src="audio/fyr-night-run.mp3" loop preload="none"></audio>
 
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
@@ -774,7 +774,21 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
   /* ---------- Audio ---------- */
   const audio = document.getElementById('ambient-audio');
   const audioBtn = document.getElementById('audio-btn');
-  audio.volume = 0.6;
+  const MAX_VOL = 0.35;   // gentle ceiling; the file itself is mastered to -18 LUFS
+  let fadeRaf = 0;
+  audio.volume = 0;
+
+  function fadeTo(target, ms, done) {
+    cancelAnimationFrame(fadeRaf);
+    const from = audio.volume, t0 = performance.now();
+    const step = now => {
+      const p = Math.min((now - t0) / ms, 1);
+      audio.volume = from + (target - from) * p * p; // ease-in so it creeps up
+      if (p < 1) fadeRaf = requestAnimationFrame(step);
+      else if (done) done();
+    };
+    fadeRaf = requestAnimationFrame(step);
+  }
 
   function setAudioUI(on) {
     audioBtn.textContent = on ? '[ AUDIO: ON ]' : '[ AUDIO: OFF ]';
@@ -783,15 +797,19 @@ dialog.modal[open] .modal-box { animation: sheet-up 0.4s var(--ease) both; }
   }
 
   audioBtn.addEventListener('click', async () => {
-    if (audio.paused) {
-      try { await audio.play(); setAudioUI(true); }
-      catch (err) {
+    if (audio.paused || audioBtn.getAttribute('aria-pressed') === 'false') {
+      try {
+        audio.volume = 0;
+        await audio.play();
+        setAudioUI(true);
+        fadeTo(MAX_VOL, 2500);
+      } catch (err) {
         audioBtn.textContent = '[ AUDIO: N/A ]';
         audioBtn.disabled = true;
       }
     } else {
-      audio.pause();
       setAudioUI(false);
+      fadeTo(0, 600, () => audio.pause());
     }
   });
 

@@ -11,6 +11,7 @@ A high-performance, minimalist, and UX-focused web interface designed for **FYR_
 - **Night-Run Animated Hero**: A full-screen Canvas 2D scene of red tail-light and white headlight streaks racing down a road, with a pulsing voltage-trace horizon. The streaks speed up as you scroll, and the scene fades out once you're past the hero.
 - **Live Diagnostics HUD**: Gauge-style readouts (battery voltage, charging voltage, fault codes counting down to 00) that count up when the page loads.
 - **Cinematic Headline Entrance**: An oversized headline that slides in one line at a time, with the sub-line, HUD and CTAs fading in after it.
+- **Original Soundtrack ("Night Run")**: An opt-in, copyright-free 122 BPM deep-house loop, synthesized from scratch with `tools/night_run.py` (no samples). It's mastered to -18 LUFS and fades in gently to 35% volume, so toggling it on never blasts anyone.
 - **Dual-Optimized Architecture**: An app-style layout for mobile and a cinematic editorial layout for desktop, served from a single codebase.
 - **Interactive Service Index**: Tapping or clicking any service opens a native `<dialog>`: a bottom sheet on mobile, a centered modal on desktop. Each one has a service description and a pre-filled WhatsApp booking link.
 - **Smooth Motion Design**: Liquid-smoke background, scroll-reveal sections, a scroll progress bar, and a glassmorphism header that reacts to scrolling.
