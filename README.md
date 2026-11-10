@@ -2,26 +2,30 @@
 
 A high-performance, minimalist, and UX-focused web interface designed for **FYR_SPEEDZ**, an auto-electrical, diagnostic, and security installation service provider based in Cape Town, South Africa.
 
-🌐 **Live Mockup**: [necero71.github.io/FYR-SPEDZ-MOCK-UP](https://necero71.github.io/FYR-SPEEDZ/)
+🌐 **Live Site**: [necero71.github.io/FYR-SPEEDZ](https://necero71.github.io/FYR-SPEEDZ/)
 
 ---
 
 ## 🚀 Key Features & UX Design
 
-- **Dual-Optimized Architecture**: Features a sleek, app-optimized layout for mobile users and an immersive, cinematic editorial layout for desktop screens, all served from a single codebase.
-- **Interactive Service Index**: Tapping or clicking any capability opens an animated bottom-sheet (mobile) or centered modal (desktop) with detailed service descriptions and a direct pre-filled WhatsApp booking link.
-- **Buttery-Smooth Motion Design**: Minimalist micro-interactions, fluid card transitions, a dynamic scroll progress indicator, and a responsive glassmorphism header.
-- **Quality-of-Life (QoL) Enhancements**: Quick-copy clipboard toasts for contact metadata, full keyboard accessibility (`Tab`, `Enter`, `Escape`), and localized South African contact endpoints (`Fayyaad` & `Jashmika`).
+- **Night-Run Animated Hero**: A full-screen Canvas 2D scene of red tail-light and white headlight streaks racing down a road, with a pulsing voltage-trace horizon. The streaks speed up as you scroll, and the scene fades out once you're past the hero.
+- **Live Diagnostics HUD**: Gauge-style readouts (battery voltage, charging voltage, fault codes counting down to 00) that count up when the page loads.
+- **Cinematic Headline Entrance**: An oversized headline that slides in one line at a time, with the sub-line, HUD and CTAs fading in after it.
+- **Dual-Optimized Architecture**: An app-style layout for mobile and a cinematic editorial layout for desktop, served from a single codebase.
+- **Interactive Service Index**: Tapping or clicking any service opens a native `<dialog>`: a bottom sheet on mobile, a centered modal on desktop. Each one has a service description and a pre-filled WhatsApp booking link.
+- **Smooth Motion Design**: Liquid-smoke background, scroll-reveal sections, a scroll progress bar, and a glassmorphism header that reacts to scrolling.
+- **Performance & Accessibility**: Animations pause when off-screen or when the tab is hidden, use fewer particles on mobile, and cap canvas resolution. `prefers-reduced-motion` gets a static scene. Keyboard support (`Tab`, `Enter`, `Escape`) and visible focus states are included.
+- **SEO Ready**: Meta and Open Graph tags plus `AutoRepair` JSON-LD structured data.
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Markup**: Semantic, accessible HTML5 (`index.html`)
-- **Styling**: Modern CSS3 (CSS Variables, Flexbox, Grid, Media Queries, Backdrop Filters)
-- **Scripting**: Vanilla JavaScript (Intersection & Scroll event handlers, DOM state management, Clipboard API)
+- **Styling**: Modern CSS3 (CSS Variables, Flexbox, Grid, Media Queries, Backdrop Filters, Keyframe Animations)
+- **Scripting**: Vanilla JavaScript (Canvas 2D, IntersectionObserver, requestAnimationFrame, native `<dialog>`)
 - **Typography**: Google Fonts (*Syne*, *Inter*, *JetBrains Mono*)
-- **Hosting**: GitHub Pages
+- **Hosting**: GitHub Pages, auto-deployed via GitHub Actions on push to `main`
 
 ---
 
@@ -45,6 +49,7 @@ A high-performance, minimalist, and UX-focused web interface designed for **FYR_
 * **Jashmika**: [062 682 8245](tel:+27626828245)
 * **Booking**: Instant WhatsApp integration via click-to-chat.
 * **Location**: Cape Town (Mobile service availability active).
+* **Socials**: [TikTok](https://www.tiktok.com/@fyrspeedz_jfr) · [YouTube](https://youtube.com/@fyr_speedz)
 
 ---
 Designed & Built by N.Mavromatis
